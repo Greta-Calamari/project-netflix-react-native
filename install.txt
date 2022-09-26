@@ -1,0 +1,14 @@
+npm install react-native-gesture-handler
+expo install expo-status-bar 
+npm install @react-navigation/stack
+npm install @react-navigation/native
+npm install styled-components 
+expo install react-native-safe-area-context
+expo install react-native-screens
+npm install @react-navigation/bottom-tabs
+expo install expo-linear-gradient
+expo install expo-font @expo-google-fonts/montserrat
+
+
+npm install @react-navigation/native
+npm install @react-navigation/native-stack
