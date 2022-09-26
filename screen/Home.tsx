@@ -75,8 +75,17 @@ export default function Home() {
     
 //     return <Text style={{color:"white",zIndex:100000}}>{response.}</Text>
 //   }
+const [movies,setMovies]=useState<any[]>([])
+  useEffect(()=>{
+    fetch(apiPath)
+    .then(response=>response.json())
+    .then(res=>setMovies(res))
+    .catch(err=> console.log(err))
+    
+  },[movies])
   
   return (
+    
     <>
       <StatusBar 
       translucent 
@@ -106,15 +115,21 @@ export default function Home() {
               ):(
                 <Text style={{color:"white"}}>Sorry !! No Movies Found</Text>
               )} */}
+
               {
-                getContent()
+                movies.map(movie=>(
+                  <Text key={movie.key}>{movie.title}</Text>
+                ))
               }
+              
+          </Text> 
+
+          
 
                 
 
 
 
-          </Text> 
 
           
 
