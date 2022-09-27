@@ -14,48 +14,13 @@ npm install @react-navigation/native
 npm install @react-navigation/native-stack
 
 
-// first attempt
+{
+movies.map((movie,index)=>(
 
-  // const [movies,setMovies]=useState<any[]>([])
+<MovieBox
+key={index}
+{...movie}
 
-  // useEffect(()=>{
-  //   fetch(apiPath)
-  //   .then((response)=>response.json())
-  //   .then(data=>{
-  //     console.log(data)
-  //     setMovies(data.results)
-  //   })
-  // },[])
-
-  // second attempt
-  
-// const [isLoading, setLoading] = useState(true);
-// let [error,setError]= useState()
-// const [response, setResponse] = useState();
-  
-
-//   useEffect(() => {
-//     fetch(apiPath)
-//     .then(res => res.json())
-//     .then((result)=>{
-//       setLoading(false);
-//       setResponse(result)
-//     },
-//     (error)=>{
-//       setLoading(false);
-//       setError(error)
-//     }
-//     )
-//   }, []);
-
-//   const getContent = ()=>{
-//     if(isLoading){
-//       return <ActivityIndicator size="large"/>
-//     }
-//     if(error){
-//       return <Text style={{color:"white"}}>{error}</Text>
-//     }
-//     console.log(response)
-    
-//     return <Text style={{color:"white",zIndex:100000}}>{response.}</Text>
-//   }
+/>
+))
+} 
