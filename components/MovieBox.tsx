@@ -6,6 +6,7 @@ const MovieBox = ({title, poster_path,vote_average,relese_date,overview}:any) =>
     <View>
       <Text style={{color:"white"}}>
         {title}
+        {poster_path}
       </Text>
     </View>
   )

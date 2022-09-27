@@ -78,10 +78,11 @@ export default function Header(){
 }
 const styles = StyleSheet.create({
     container:{
-        marginLeft:50,
+       
         backgroundColor:"#DA1A37",
         position: "absolute",
-        bottom:0,
+        bottom:8,
+        left:30,
         borderRadius:50,
         width:300,
         height:60,
