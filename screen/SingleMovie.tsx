@@ -19,6 +19,8 @@ export default function SingleMovie({
     first_air_date,
     overview,
     vote_average,
+    generes,
+    runtime,
   } = route.params;
 
   useEffect(() => {
@@ -37,8 +39,7 @@ export default function SingleMovie({
   }
 
   return (
-    <View>
-      {/* {title === title ? <Text>{title}</Text> : <Text>{name}</Text>} */}
+    <View style={styles.window}>
       <View style={styles.container}>
         <Image
           style={styles.image}
@@ -48,7 +49,7 @@ export default function SingleMovie({
         />
         <LinearGradient
           // Background Linear Gradient
-          colors={["rgba(0,0,0,0.8)", "transparent"]}
+          colors={["rgba(0,0,0,1)", "transparent"]}
           style={[
             styles.background,
             {
@@ -62,6 +63,31 @@ export default function SingleMovie({
         />
         <MaterialIcons name="keyboard-arrow-left" style={styles.chevron} />
       </View>
+      <LinearGradient
+        // Background Linear Gradient
+        colors={["rgba(0,0,0,1)", "transparent"]}
+        style={[
+          styles.background,
+          {
+            transform: [{ rotateY: "180deg" }, { rotateZ: "180deg" }],
+          },
+        ]}
+      />
+      <View style={styles.subContainer}>
+        {title === title ? (
+          <Text style={styles.movieTitle}>{title}</Text>
+        ) : (
+          <Text style={styles.movieTitle}>{name}</Text>
+        )}
+      </View>
+      <View style={styles.subContainer}>
+        <Text style={styles.subDate}>{release_date}</Text>
+        <Text style={styles.subDate}>{runtime}</Text>
+        <Text style={styles.subDate}></Text>
+      </View>
+      <View style={styles.subContainer2}>
+        <Text style={styles.star}>{vote_average}</Text>
+      </View>
     </View>
   );
 }
@@ -74,6 +100,9 @@ let width = Dimensions.get("window").width;
 let height = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
+  window: {
+    backgroundColor: "#171721",
+  },
   image: {
     width: width,
     height: 600,
@@ -101,6 +130,29 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     bottom: 0,
-    height: 400,
+    height: 300,
+  },
+  movieTitle: {
+    fontSize: 40,
+    fontWeight: "bold",
+    color: "white",
+  },
+  subContainer: {
+    position: "relative",
+    bottom: 100,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+  subDate: {
+    color: "grey",
+  },
+  subContainer2: {
+    flexDirection: "row",
+    justifyContent: "center",
+    position: "relative",
+    bottom: 80,
+  },
+  star: {
+    fontSize: 40,
   },
 });

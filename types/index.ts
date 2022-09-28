@@ -23,6 +23,8 @@ export interface Continue{
     overview:string
     release_date:string
     vote_average:number
+    runtime:number
+    generes:{name:string}
 }
 
 

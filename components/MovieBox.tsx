@@ -23,6 +23,8 @@ export default function MovieBox({ movie }: Props) {
     first_air_date,
     overview,
     vote_average,
+    runtime,
+    generes,
   } = movie;
   const navigation = useNavigation();
 
@@ -39,6 +41,8 @@ export default function MovieBox({ movie }: Props) {
             first_air_date,
             overview,
             vote_average,
+            runtime,
+            generes,
           })
         }
       >
