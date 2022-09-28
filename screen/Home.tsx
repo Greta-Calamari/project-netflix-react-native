@@ -115,7 +115,9 @@ export default function Home() {
       </View>
 
       {/* Banner Play */}
-      {/* <Header /> */}
+      <View>
+        <Header />
+      </View>
     </ScrollView>
   );
 }
