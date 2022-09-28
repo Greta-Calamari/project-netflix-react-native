@@ -1,14 +1,13 @@
-import { Text, Image, StyleSheet, View } from "react-native";
+import { View, Text, StyleSheet, Image } from "react-native";
 import React from "react";
-import { Movie } from "../types";
+import { TV } from "../types";
 
 interface Props {
-  movie: Movie;
+  Tv: TV;
 }
 
-export default function MovieBox({ movie }: Props) {
-  const { title, poster_path, release_date } = movie;
-
+export function TvBox({ Tv }: Props) {
+  const { name, poster_path, first_air_date } = Tv;
   return (
     <View>
       <Image
@@ -18,13 +17,12 @@ export default function MovieBox({ movie }: Props) {
         }}
       />
       <View style={styles.wrap}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.date}>{release_date}</Text>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.date}>{first_air_date}</Text>
       </View>
     </View>
   );
 }
-
 // style
 const styles = StyleSheet.create({
   image: {
@@ -33,7 +31,7 @@ const styles = StyleSheet.create({
     margin: 10,
     borderRadius: 20,
   },
-  title: {
+  name: {
     color: "white",
   },
   date: {
