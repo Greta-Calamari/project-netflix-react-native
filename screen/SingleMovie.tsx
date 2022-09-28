@@ -138,14 +138,14 @@ const styles = StyleSheet.create({
   book: {
     position: "absolute",
     right: 20,
-    top: 30,
+    top: 70,
     color: "white",
     fontSize: 30,
   },
   chevron: {
     position: "absolute",
     left: 20,
-    top: 30,
+    top: 70,
     color: "white",
     fontSize: 30,
   },
