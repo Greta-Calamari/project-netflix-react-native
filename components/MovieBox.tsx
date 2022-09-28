@@ -49,6 +49,10 @@ export default function MovieBox({ movie }: Props) {
           }}
         />
       </TouchableHighlight>
+      <View style={styles.wrap}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.date}>{title}</Text>
+      </View>
     </View>
   );
 }
