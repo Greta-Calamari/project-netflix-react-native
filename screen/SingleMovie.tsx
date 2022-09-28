@@ -1,4 +1,13 @@
-import { View, Text, Image, StyleSheet, Dimensions } from "react-native";
+import {
+  View,
+  Text,
+  Image,
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  Button,
+  Pressable,
+} from "react-native";
 import React, { useEffect, useState } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { Continue } from "../types";
@@ -39,7 +48,7 @@ export default function SingleMovie({
   }
 
   return (
-    <View style={styles.window}>
+    <ScrollView style={styles.window}>
       <View style={styles.container}>
         <Image
           style={styles.image}
@@ -49,7 +58,7 @@ export default function SingleMovie({
         />
         <LinearGradient
           // Background Linear Gradient
-          colors={["rgba(0,0,0,1)", "transparent"]}
+          colors={["rgba(23, 29, 33, 1)", "transparent"]}
           style={[
             styles.background,
             {
@@ -80,6 +89,7 @@ export default function SingleMovie({
           <Text style={styles.movieTitle}>{name}</Text>
         )}
       </View>
+
       <View style={styles.subContainer}>
         <Text style={styles.subDate}>{release_date}</Text>
         <Text style={styles.subDate}>{runtime}</Text>
@@ -88,7 +98,21 @@ export default function SingleMovie({
       <View style={styles.subContainer2}>
         <Text style={styles.star}>{vote_average}</Text>
       </View>
-    </View>
+
+      <View style={styles.subContainer2}>
+        <Text style={styles.subOverview}>{overview}</Text>
+      </View>
+
+      <View>
+        <Text></Text>
+      </View>
+
+      <View style={styles.btnCont}>
+        <Pressable style={styles.button}>
+          <Text style={styles.textBtn}>Watch Now</Text>
+        </Pressable>
+      </View>
+    </ScrollView>
   );
 }
 // styles
@@ -101,7 +125,7 @@ let height = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
   window: {
-    backgroundColor: "#171721",
+    backgroundColor: "rgb(23, 29, 33)",
   },
   image: {
     width: width,
@@ -150,9 +174,32 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     position: "relative",
-    bottom: 80,
+    bottom: 90,
   },
   star: {
-    fontSize: 40,
+    fontSize: 30,
+    color: "#FDC432",
+  },
+  subOverview: {
+    color: "grey",
+    margin: 10,
+  },
+  button: {
+    backgroundColor: "#E11A38",
+    padding: 20,
+    width: 200,
+    flexDirection: "row",
+    justifyContent: "center",
+  },
+
+  textBtn: {
+    color: "white",
+    fontSize: 20,
+  },
+  btnCont: {
+    flexDirection: "row",
+    justifyContent: "center",
+    position: "relative",
+    bottom: 90,
   },
 });
