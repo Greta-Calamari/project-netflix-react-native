@@ -2,14 +2,21 @@ import { View, Text } from "react-native";
 import React, { useEffect, useState } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
 import { Continue } from "../types";
-interface Props {
-  movie: Continue;
-}
-export default function SingleMovie(
-  { movie }: Props,
-  { navigation }: NativeStackHeaderProps
-) {
-  const { id, title } = movie;
+
+export default function SingleMovie({
+  route,
+  navigation,
+}: NativeStackHeaderProps) {
+  const {
+    id,
+    title,
+    release_date,
+    poster_path,
+    name,
+    first_air_date,
+    overview,
+    vote_average,
+  } = route.params;
 
   useEffect(() => {
     getDetail();
@@ -23,7 +30,7 @@ export default function SingleMovie(
     const result = await fetch(apiPathSingle);
     const getResult = await result.json();
     setMovieDetailData(getResult.results);
-    console.log(setMovieDetailData);
+    // console.log(getResult.results);
   }
 
   return (

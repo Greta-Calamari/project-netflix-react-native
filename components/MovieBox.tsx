@@ -6,20 +6,42 @@ import {
   TouchableHighlight,
 } from "react-native";
 import React from "react";
-import { Movie } from "../types";
+import { Continue } from "../types";
 import { useNavigation } from "@react-navigation/native";
 
 interface Props {
-  movie: Movie;
+  movie: Continue;
 }
 
 export default function MovieBox({ movie }: Props) {
-  const { title, poster_path, release_date } = movie;
+  const {
+    title,
+    poster_path,
+    release_date,
+    id,
+    name,
+    first_air_date,
+    overview,
+    vote_average,
+  } = movie;
   const navigation = useNavigation();
 
   return (
     <View>
-      <TouchableHighlight onPress={() => navigation.navigate("Movie")}>
+      <TouchableHighlight
+        onPress={() =>
+          navigation.navigate("Movie", {
+            id,
+            title,
+            release_date,
+            poster_path,
+            name,
+            first_air_date,
+            overview,
+            vote_average,
+          })
+        }
+      >
         <Image
           style={styles.image}
           source={{
@@ -27,17 +49,11 @@ export default function MovieBox({ movie }: Props) {
           }}
         />
       </TouchableHighlight>
-      <View style={styles.wrap}>
-        <Text style={styles.title} onPress={() => navigation.navigate("Movie")}>
-          {title}
-        </Text>
-        <Text style={styles.date}>{release_date}</Text>
-      </View>
     </View>
   );
 }
 
-// style
+// styles
 const styles = StyleSheet.create({
   image: {
     width: 150,
