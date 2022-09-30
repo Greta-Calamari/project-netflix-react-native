@@ -55,13 +55,13 @@ export default function MovieBox({ movie }: Props) {
       </TouchableHighlight>
       <View style={styles.wrap}>
         <Text style={styles.title}>{title}</Text>
-        <Text style={styles.date}>{title}</Text>
+        <Text style={styles.date}>{release_date}</Text>
       </View>
     </View>
   );
 }
 
-// styles
+// style
 const styles = StyleSheet.create({
   image: {
     width: 150,
