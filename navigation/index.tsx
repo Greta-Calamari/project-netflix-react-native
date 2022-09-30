@@ -6,6 +6,7 @@ import Play from "../screen/Play";
 import Saved from "../screen/Saved";
 import User from "../screen/User";
 import SingleMovie from "../screen/SingleMovie";
+import SingleTv from "../screen/SingleTv";
 
 export default function Navigation() {
   return (
@@ -40,6 +41,11 @@ export default function Navigation() {
           name="Movie"
           component={SingleMovie}
           options={{ title: "SingleMovie" }}
+        />
+        <Stack.Screen
+          name="Tv"
+          component={SingleTv}
+          options={{ title: "SingleTv" }}
         />
       </Stack.Navigator>
     </NavigationContainer>

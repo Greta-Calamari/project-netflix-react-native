@@ -1,21 +1,54 @@
-import { View, Text, StyleSheet, Image } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  Image,
+  TouchableHighlight,
+} from "react-native";
 import React from "react";
-import { TV } from "../types";
+import { Continue } from "../types";
+import { useNavigation } from "@react-navigation/native";
 
 interface Props {
-  Tv: TV;
+  Tv: Continue;
 }
 
 export function TvBox({ Tv }: Props) {
-  const { name, poster_path, first_air_date } = Tv;
+  const {
+    name,
+    poster_path,
+    first_air_date,
+    overview,
+    runtime,
+    id,
+    vote_average,
+    generes,
+  } = Tv;
+  const navigation = useNavigation();
+
   return (
     <View>
-      <Image
-        style={styles.image}
-        source={{
-          uri: `https://image.tmdb.org/t/p/w500/${poster_path}`,
-        }}
-      />
+      <TouchableHighlight
+        onPress={() =>
+          navigation.navigate("Tv", {
+            id,
+            poster_path,
+            name,
+            first_air_date,
+            overview,
+            vote_average,
+            runtime,
+            generes,
+          })
+        }
+      >
+        <Image
+          style={styles.image}
+          source={{
+            uri: `https://image.tmdb.org/t/p/w500/${poster_path}`,
+          }}
+        />
+      </TouchableHighlight>
       <View style={styles.wrap}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.date}>{first_air_date}</Text>

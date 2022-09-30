@@ -20,15 +20,14 @@ export default function SingleMovie({
   navigation,
 }: NativeStackHeaderProps) {
   const {
-    id,
-    title,
-    release_date,
-    poster_path,
     name,
+    poster_path,
+    first_air_date,
     overview,
+    runtime,
+    id,
     vote_average,
     generes,
-    runtime,
   } = route.params;
 
   useEffect(() => {
@@ -37,7 +36,7 @@ export default function SingleMovie({
 
   //   call single movie
   const apiKey = "6ab6d103cf2ba85d668cee4e2de24983";
-  const apiPathSingle = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`;
+  const apiPathSingle = `https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}`;
   const [movieDetailData, setMovieDetailData] = useState<Continue[]>([]);
   async function getDetail() {
     const result = await fetch(apiPathSingle);
@@ -82,15 +81,11 @@ export default function SingleMovie({
         ]}
       />
       <View style={styles.subContainer}>
-        {title === title ? (
-          <Text style={styles.movieTitle}>{title}</Text>
-        ) : (
-          <Text style={styles.movieTitle}>{name}</Text>
-        )}
+        <Text style={styles.movieTitle}>{name}</Text>
       </View>
 
       <View style={styles.subContainer}>
-        <Text style={styles.subDate}>{release_date}</Text>
+        <Text style={styles.subDate}>{first_air_date}</Text>
         <Text style={styles.subDate}>{runtime}</Text>
         <Text style={styles.subDate}></Text>
       </View>
