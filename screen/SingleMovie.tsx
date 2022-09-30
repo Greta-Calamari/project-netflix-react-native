@@ -19,6 +19,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Rating } from "react-native-ratings";
+import axios from "axios";
 
 export default function SingleMovie(this: any) {
   const route = useRoute();
@@ -44,29 +45,29 @@ export default function SingleMovie(this: any) {
   const apiPathSingle = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`;
   const [movieDetailData, setMovieDetailData] = useState<Continue[]>([]);
   async function getDetail() {
-    navigation.navigate("SingleMovie", {
-      generes,
-      id,
-      overview,
-      poster_path,
-      release_date,
-      runtime,
-      title,
-      vote_average,
-    });
     const result = await fetch(apiPathSingle);
+    console.log(result);
     const getResult = await result.json();
     setMovieDetailData(getResult.results);
-    console.log(getResult.results);
+    // console.log(getResult.results);
   }
 
   const apiPathActor = `https://api.themoviedb.org/3/movie/${id}/casts?api_key=${apiKey}&language=en-US`;
+  // const [actor, setActor] = useState<Actor[]>([]);
+  // async function getActor() {
+  //   const result = await fetch(apiPathActor);
+  //   const getResult = await result.json();
+  //   setActor(getResult.results);
+  // }
+
   const [actor, setActor] = useState<Actor[]>([]);
   async function getActor() {
-    const result = await fetch(apiPathActor);
-    const getResult = await result.json();
-    setActor(getResult.results);
-    // console.log(getResult.results);
+    try {
+      const { data: response } = await axios.get(apiPathActor);
+      setActor(response);
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   return (
