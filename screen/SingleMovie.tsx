@@ -5,31 +5,34 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  Button,
   Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import { Continue } from "../types";
+import { Actor, Continue } from "../types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 
-export default function SingleMovie({
-  route,
-  navigation,
-}: NativeStackHeaderProps) {
+interface Props {
+  actors: Actor;
+}
+
+export default function SingleMovie(
+  { route, navigation }: NativeStackHeaderProps,
+  { actors }: Props
+) {
   const {
     id,
     title,
     release_date,
     poster_path,
-    name,
     overview,
     vote_average,
     generes,
     runtime,
   } = route.params;
+  const { original_name, character } = actors;
 
   useEffect(() => {
     getDetail();
@@ -43,6 +46,16 @@ export default function SingleMovie({
     const result = await fetch(apiPathSingle);
     const getResult = await result.json();
     setMovieDetailData(getResult.results);
+    // console.log(getResult.results);
+  }
+
+  // call actors
+  const apiPathActor = `https://api.themoviedb.org/3/movie/${id}/casts?api_key=${apiKey}&language=en-US`;
+  const [actor, setActor] = useState<Actor[]>([]);
+  async function getActor() {
+    const result = await fetch(apiPathSingle);
+    const getResult = await result.json();
+    setActor(getResult.results);
     // console.log(getResult.results);
   }
 
@@ -69,7 +82,12 @@ export default function SingleMovie({
           name="bookmark-minus-outline"
           style={styles.book}
         />
-        <MaterialIcons name="keyboard-arrow-left" style={styles.chevron} />
+
+        <MaterialIcons
+          name="keyboard-arrow-left"
+          style={styles.chevron}
+          onPress={() => navigation.goBack()}
+        />
       </View>
       <LinearGradient
         // Background Linear Gradient
@@ -82,11 +100,7 @@ export default function SingleMovie({
         ]}
       />
       <View style={styles.subContainer}>
-        {title === title ? (
-          <Text style={styles.movieTitle}>{title}</Text>
-        ) : (
-          <Text style={styles.movieTitle}>{name}</Text>
-        )}
+        <Text style={styles.movieTitle}>{title}</Text>
       </View>
 
       <View style={styles.subContainer}>
@@ -103,7 +117,7 @@ export default function SingleMovie({
       </View>
 
       <View>
-        <Text></Text>
+        <Text style={styles.cast}>Cast</Text>
       </View>
 
       <View style={styles.btnCont}>
@@ -156,10 +170,12 @@ const styles = StyleSheet.create({
     height: 300,
   },
   movieTitle: {
+    textAlign: "center",
     fontSize: 40,
     fontWeight: "bold",
     color: "white",
   },
+
   subContainer: {
     position: "relative",
     bottom: 100,
@@ -198,6 +214,12 @@ const styles = StyleSheet.create({
   btnCont: {
     flexDirection: "row",
     justifyContent: "center",
+    marginBottom: 30,
+  },
+  cast: {
+    color: "white",
+    fontSize: 20,
+    marginLeft: 10,
     position: "relative",
     bottom: 90,
   },

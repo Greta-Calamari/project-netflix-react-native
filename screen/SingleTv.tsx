@@ -68,7 +68,11 @@ export default function SingleMovie({
           name="bookmark-minus-outline"
           style={styles.book}
         />
-        <MaterialIcons name="keyboard-arrow-left" style={styles.chevron} />
+        <MaterialIcons
+          name="keyboard-arrow-left"
+          style={styles.chevron}
+          onPress={() => navigation.goBack()}
+        />
       </View>
       <LinearGradient
         // Background Linear Gradient
@@ -151,6 +155,7 @@ const styles = StyleSheet.create({
     height: 300,
   },
   movieTitle: {
+    textAlign: "center",
     fontSize: 40,
     fontWeight: "bold",
     color: "white",
