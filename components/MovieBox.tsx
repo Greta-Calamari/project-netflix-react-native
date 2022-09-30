@@ -30,11 +30,11 @@ export default function MovieBox({ movie }: Props) {
     <View>
       <TouchableHighlight
         onPress={() =>
-          navigation.navigate("Movie", {
-            id,
+          navigation.navigate("SingleMovie", {
             title,
-            release_date,
             poster_path,
+            release_date,
+            id,
             overview,
             vote_average,
             runtime,
@@ -57,7 +57,6 @@ export default function MovieBox({ movie }: Props) {
   );
 }
 
-// style
 const styles = StyleSheet.create({
   image: {
     width: 150,

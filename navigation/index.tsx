@@ -38,12 +38,12 @@ export default function Navigation() {
           options={{ title: "User" }}
         />
         <Stack.Screen
-          name="Movie"
+          name="SingleMovie"
           component={SingleMovie}
           options={{ title: "SingleMovie" }}
         />
         <Stack.Screen
-          name="Tv"
+          name="SingleTv"
           component={SingleTv}
           options={{ title: "SingleTv" }}
         />

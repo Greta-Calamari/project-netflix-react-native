@@ -5,20 +5,19 @@ import {
   StyleSheet,
   Dimensions,
   ScrollView,
-  Button,
   Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { NativeStackHeaderProps } from "@react-navigation/native-stack";
-import { Continue } from "../types";
+import { Continue, NavigationProps, SingleMovieRouteProps } from "../types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
+import { useNavigation, useRoute } from "@react-navigation/native";
+import { Rating } from "react-native-ratings";
 
-export default function SingleMovie({
-  route,
-  navigation,
-}: NativeStackHeaderProps) {
+export default function SingleTv() {
+  const route = useRoute();
+  const navigation = useNavigation<NavigationProps>();
   const {
     name,
     poster_path,
@@ -28,21 +27,29 @@ export default function SingleMovie({
     id,
     vote_average,
     generes,
-  } = route.params;
+  } = route.params as SingleMovieRouteProps;
 
   useEffect(() => {
     getDetail();
   }, []);
 
-  //   call single movie
   const apiKey = "6ab6d103cf2ba85d668cee4e2de24983";
   const apiPathSingle = `https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}`;
   const [movieDetailData, setMovieDetailData] = useState<Continue[]>([]);
   async function getDetail() {
+    navigation.navigate("SingleTv", {
+      generes,
+      id,
+      overview,
+      poster_path,
+      name,
+      runtime,
+      first_air_date,
+      vote_average,
+    });
     const result = await fetch(apiPathSingle);
     const getResult = await result.json();
     setMovieDetailData(getResult.results);
-    // console.log(getResult.results);
   }
 
   return (
@@ -55,7 +62,6 @@ export default function SingleMovie({
           }}
         />
         <LinearGradient
-          // Background Linear Gradient
           colors={["rgba(23, 29, 33, 1)", "transparent"]}
           style={[
             styles.background,
@@ -75,7 +81,6 @@ export default function SingleMovie({
         />
       </View>
       <LinearGradient
-        // Background Linear Gradient
         colors={["rgba(0,0,0,1)", "transparent"]}
         style={[
           styles.background,
@@ -95,6 +100,18 @@ export default function SingleMovie({
       </View>
       <View style={styles.subContainer2}>
         <Text style={styles.star}>{vote_average}</Text>
+        <View style={styles.def}></View>
+        <View style={styles.rating}>
+          <Rating
+            type="star"
+            ratingCount={vote_average}
+            imageSize={30}
+            tintColor="rgb(23, 29, 33)"
+            readonly={true}
+            fractions={2}
+          />
+        </View>
+        <View style={styles.def}></View>
       </View>
 
       <View style={styles.subContainer2}>
@@ -102,7 +119,11 @@ export default function SingleMovie({
       </View>
 
       <View>
-        <Text></Text>
+        <View>
+          <Text style={styles.cast}>Cast</Text>
+          <Text style={styles.cast}></Text>
+          <Text style={styles.cast}></Text>
+        </View>
       </View>
 
       <View style={styles.btnCont}>
@@ -113,12 +134,8 @@ export default function SingleMovie({
     </ScrollView>
   );
 }
-// styles
-
-//full width
 let width = Dimensions.get("window").width;
 
-//full height
 let height = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
@@ -200,5 +217,22 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     position: "relative",
     bottom: 90,
+  },
+  cast: {
+    color: "white",
+    fontSize: 20,
+    marginLeft: 10,
+    position: "relative",
+    bottom: 90,
+  },
+  rating: {
+    marginTop: 6,
+  },
+  def: {
+    height: 40,
+    marginTop: 5,
+    width: 20,
+    backgroundColor: "rgb(23, 29, 33)",
+    zIndex: 1000,
   },
 });

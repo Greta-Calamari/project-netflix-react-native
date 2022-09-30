@@ -1,3 +1,5 @@
+import { StackNavigationProp } from "@react-navigation/stack"
+
 export interface Continue{
     id:string
     name:string
@@ -8,13 +10,40 @@ export interface Continue{
     release_date:string
     vote_average:number
     runtime:number
-    generes:{name:string}
+    generes:string
 }
 
 export interface Actor{
     original_name:string
     character:string
 }
+export interface SingleMovieRouteProps {
+    id: string;
+    title?: string;
+    release_date?:string
+    poster_path:string
+    overview:string
+    runtime:number
+    vote_average:number
+    generes:string
+    first_air_date?:string
+    name?:string
+    original_name?:string
+    character?:string
+  }
+export type StackParamsList = {
+    Home:undefined
+    SingleMovie:SingleMovieRouteProps | undefined
+    SingleTv:SingleMovieRouteProps| undefined
+    Play:undefined
+    Saved:undefined
+}
+    
+export type NavigationProps = StackNavigationProp<StackParamsList>
+    
+
+
+
 
 
 

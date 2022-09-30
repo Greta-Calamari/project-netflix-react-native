@@ -3,27 +3,24 @@ import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, ScrollView, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Header from "../components/Header";
-import { Continue, Movie, TV } from "../types";
+import { Continue } from "../types";
 import MovieBox from "../components/MovieBox";
 import { TvBox } from "../components/TvBox";
 import ContinueBox from "../components/ContinueBox";
 
 export default function Home() {
-  // const apiSeacrh="https://api.themoviedb.org/3/search/movie?api_key=6ab6d103cf2ba85d668cee4e2de24983&language=en-US&page=1&include_adult=false"
   const apiKey = "6ab6d103cf2ba85d668cee4e2de24983";
   const apiPathPopular = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`;
   const apiPathTv = `http://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&sort_by=popularity.desc&with_genres=18`;
   const apiContinue = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=pt-BR&query=Kagemusha,+a+Sombra+do+Samurai`;
 
-  // Call API
   useEffect(() => {
     getMovies();
     getTV();
     getContinue();
   }, []);
 
-  // Call Movies
-  const [movies, setMovies] = useState<Movie[]>([]);
+  const [movies, setMovies] = useState<Continue[]>([]);
   async function getMovies() {
     const result = await fetch(apiPathPopular);
     const getResult = await result.json();
@@ -31,15 +28,13 @@ export default function Home() {
     // console.log(getResult.results);
   }
 
-  // Call TV
-  const [tv, setTV] = useState<TV[]>([]);
+  const [tv, setTV] = useState<Continue[]>([]);
   async function getTV() {
     const result = await fetch(apiPathTv);
     const getResult = await result.json();
     setTV(getResult.results);
   }
 
-  // Call continue
   const [continues, setContinue] = useState<Continue[]>([]);
   async function getContinue() {
     const result = await fetch(apiContinue);
@@ -47,14 +42,12 @@ export default function Home() {
     setContinue(getResult.results);
   }
 
-  // render movie
+  const renderItem = ({ item }: { item: Continue }) => (
+    <MovieBox movie={item} />
+  );
 
-  const renderItem = ({ item }: { item: Movie }) => <MovieBox movie={item} />;
+  const renderItemTV = ({ item }: { item: Continue }) => <TvBox Tv={item} />;
 
-  // render tv shows
-
-  const renderItemTV = ({ item }: { item: TV }) => <TvBox Tv={item} />;
-  // rendet continue
   const renderItemContinue = ({ item }: { item: Continue }) => (
     <ContinueBox movieContinue={item} />
   );
@@ -82,7 +75,7 @@ export default function Home() {
           }}
         />
       </View>
-      {/* Movies */}
+
       <View>
         <Text style={styles.textWhite}>Popular Movie</Text>
         <FlatList
@@ -92,7 +85,7 @@ export default function Home() {
           horizontal
         ></FlatList>
       </View>
-      {/* TV shows */}
+
       <View>
         <Text style={styles.textWhite}>Tv Show</Text>
         <FlatList
@@ -103,7 +96,6 @@ export default function Home() {
         ></FlatList>
       </View>
 
-      {/* Continue Watching */}
       <View>
         <Text style={styles.textWhite}>Continue Watching</Text>
         <FlatList
@@ -114,7 +106,6 @@ export default function Home() {
         ></FlatList>
       </View>
 
-      {/* Banner Play */}
       <View>
         <Header />
       </View>
@@ -122,7 +113,6 @@ export default function Home() {
   );
 }
 
-// styles
 const styles = StyleSheet.create({
   container: {
     flex: 1,

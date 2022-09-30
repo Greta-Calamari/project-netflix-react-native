@@ -30,7 +30,7 @@ export function TvBox({ Tv }: Props) {
     <View>
       <TouchableHighlight
         onPress={() =>
-          navigation.navigate("Tv", {
+          navigation.navigate("SingleTv", {
             id,
             poster_path,
             name,
