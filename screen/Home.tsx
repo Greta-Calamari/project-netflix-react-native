@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import React, { useState, useEffect } from "react";
-import { Text, View, StyleSheet, ScrollView, FlatList } from "react-native";
+import { Text, View, StyleSheet, ScrollView, FlatList,ActivityIndicator} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Header from "../components/Header";
 import { Watched, Movie, Tv } from "../types";
@@ -8,6 +8,7 @@ import MovieBox from "../components/MovieBox";
 import { TvBox } from "../components/TvBox";
 import ContinueBox from "../components/WatchedBox";
 import { MovieResource ,TvResources, continueResources} from "../api";
+
 
 export default function Home() {
 
@@ -20,10 +21,13 @@ export default function Home() {
   const [movies, setMovies] = useState<Movie[]>([]);
   const [tvShows, setTvShows] = useState<Tv[]>([]);
   const [continues, setContinue] = useState<Watched[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
 
   async function getMovies() {
+    setIsLoading(true)
     const popularMovies = await MovieResource.getPopulars()
     setMovies(popularMovies);
+    setIsLoading(false)
   }
 
 
@@ -36,6 +40,7 @@ export default function Home() {
     const continueMovie = await continueResources.getWatched()
     setContinue(continueMovie);
   }
+
 
   const renderItem = ({ item }: { item: Movie }) => (
     <MovieBox movie={item} />
@@ -79,32 +84,44 @@ export default function Home() {
 
       <View>
         <Text style={styles.textWhite}>Popular Movie</Text>
-        <FlatList
-          data={movies}
-          keyExtractor={(item) => item.id}
-          renderItem={renderItem}
-          horizontal
-        ></FlatList>
+        {isLoading ? <ActivityIndicator /> : 
+          <FlatList
+            data={movies}
+            keyExtractor={(item) => item.id}
+            renderItem={renderItem}
+            horizontal
+          >
+          </FlatList>
+          
+        }
       </View>
 
       <View>
         <Text style={styles.textWhite}>Tv Show</Text>
+        {
+          isLoading ? <ActivityIndicator /> :
+
         <FlatList
           data={tvShows}
           keyExtractor={(item) => item.id}
           renderItem={renderItemTV}
           horizontal
         ></FlatList>
+        }
       </View>
 
       <View>
         <Text style={styles.textWhite}>Movie Watching</Text>
+        {
+          isLoading ? <ActivityIndicator /> :
         <FlatList
           data={continues}
           keyExtractor={(item) => item.id}
           renderItem={renderItemContinue}
           horizontal
         ></FlatList>
+
+        }
       </View>
 
       <View> 
