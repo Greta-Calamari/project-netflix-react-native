@@ -3,14 +3,13 @@ import {
   Text,
   Image,
   StyleSheet,
-  Dimensions,
   ScrollView,
   Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import {
   Actor,
-  Continue,
+  Movie,
   NavigationProps,
   SingleMovieRouteProps,
 } from "../types";
@@ -20,11 +19,15 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Rating } from "react-native-ratings";
 import axios from "axios";
+import { FlatList } from "react-native-gesture-handler";
+import { width } from "../utils/utils";
+import { MovieResource } from "../api";
 
 export default function SingleMovie(this: any) {
+  const [actors, setActors] = useState<Actor[]>([]);
+  const [movieDetailData, setMovieDetailData] = useState<Movie>();
   const route = useRoute();
   const navigation = useNavigation<NavigationProps>();
-  const { original_name, character } = route.params as Actor;
   const {
     id,
     title,
@@ -38,37 +41,34 @@ export default function SingleMovie(this: any) {
 
   useEffect(() => {
     getDetail();
-    getActor();
+    getActors();
   }, []);
 
-  const apiKey = "6ab6d103cf2ba85d668cee4e2de24983";
+
   const apiPathSingle = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`;
-  const [movieDetailData, setMovieDetailData] = useState<Continue[]>([]);
-  async function getDetail() {
-    const result = await fetch(apiPathSingle);
-    console.log(result);
-    const getResult = await result.json();
-    setMovieDetailData(getResult.results);
-    // console.log(getResult.results);
-  }
-
   const apiPathActor = `https://api.themoviedb.org/3/movie/${id}/casts?api_key=${apiKey}&language=en-US`;
-  // const [actor, setActor] = useState<Actor[]>([]);
-  // async function getActor() {
-  //   const result = await fetch(apiPathActor);
-  //   const getResult = await result.json();
-  //   setActor(getResult.results);
-  // }
 
-  const [actor, setActor] = useState<Actor[]>([]);
-  async function getActor() {
-    try {
-      const { data: response } = await axios.get(apiPathActor);
-      setActor(response);
-    } catch (error) {
-      console.error(error);
-    }
+  async function getDetail() {
+    const result = await MovieResource.getMovieData(id);
+    setMovieDetailData(result);
   }
+
+  async function getActors() {
+    const result = await axios.get(apiPathActor)
+    setActors(result.data.cast)
+  }
+
+  const ActorProfile = ({ original_name , character}:Actor) => (
+      <View>
+         <Text style={styles.casts}>{character}</Text>
+         <Text></Text>
+      </View>
+  );
+
+  const renderActor = ({ item }:any) => (
+    <ActorProfile  original_name={item.original_name} character={item.character} id={""} />
+  );
+
 
   return (
     <ScrollView style={styles.window}>
@@ -139,8 +139,13 @@ export default function SingleMovie(this: any) {
 
       <View>
         <Text style={styles.cast}>Cast</Text>
-        <Text style={styles.cast}>{original_name}</Text>
-        <Text style={styles.cast}>{character}</Text>
+        <FlatList
+        data={actors}
+        renderItem={renderActor}
+        keyExtractor={(item) => item.id}
+        horizontal
+        >
+        </FlatList>
       </View>
 
       <View style={styles.btnCont}>
@@ -151,9 +156,6 @@ export default function SingleMovie(this: any) {
     </ScrollView>
   );
 }
-
-let width = Dimensions.get("window").width;
-let height = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
   window: {
@@ -253,4 +255,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgb(23, 29, 33)",
     zIndex: 1000,
   },
+  casts:{
+    color:"white"
+  }
 });
