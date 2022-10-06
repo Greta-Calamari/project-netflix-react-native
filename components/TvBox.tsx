@@ -6,11 +6,11 @@ import {
   TouchableHighlight,
 } from "react-native";
 import React from "react";
-import { Continue } from "../types";
+import { Tv } from "../types";
 import { useNavigation } from "@react-navigation/native";
 
 interface Props {
-  Tv: Continue;
+  Tv: Tv;
 }
 
 export function TvBox({ Tv }: Props) {

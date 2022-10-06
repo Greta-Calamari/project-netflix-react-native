@@ -24,7 +24,7 @@ import { width } from "../utils/utils";
 import { MovieResource } from "../api";
 
 export default function SingleMovie(this: any) {
-  const [actors, setActors] = useState<Actor[]>([]);
+  const [actors, setActors] = useState<Actor>();
   const [movieDetailData, setMovieDetailData] = useState<Movie>();
   const route = useRoute();
   const navigation = useNavigation<NavigationProps>();
@@ -43,19 +43,16 @@ export default function SingleMovie(this: any) {
     getDetail();
     getActors();
   }, []);
-
-
-  const apiPathSingle = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`;
-  const apiPathActor = `https://api.themoviedb.org/3/movie/${id}/casts?api_key=${apiKey}&language=en-US`;
-
+  
+  
   async function getDetail() {
     const result = await MovieResource.getMovieData(id);
     setMovieDetailData(result);
   }
 
   async function getActors() {
-    const result = await axios.get(apiPathActor)
-    setActors(result.data.cast)
+    const result = await MovieResource.getCastData(id)
+    setActors(result)
   }
 
   const ActorProfile = ({ original_name , character}:Actor) => (

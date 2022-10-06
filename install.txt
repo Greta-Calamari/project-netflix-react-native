@@ -1,26 +1,7 @@
-npm install react-native-gesture-handler
-expo install expo-status-bar 
-npm install @react-navigation/stack
-npm install @react-navigation/native
-npm install styled-components 
-expo install react-native-safe-area-context
-expo install react-native-screens
-npm install @react-navigation/bottom-tabs
-expo install expo-linear-gradient
-expo install expo-font @expo-google-fonts/montserrat
-
-
-npm install @react-navigation/native
-npm install @react-navigation/native-stack
-
-
-{
-movies.map((movie,index)=>(
-
-<MovieBox
-key={index}
-{...movie}
-
-/>
-))
-} 
+const apiPathSingle = `https://api.themoviedb.org/3/movie/${id}?api_key=${apiKey}`;
+  const apiPathActor = `https://api.themoviedb.org/3/movie/${id}/casts?api_key=${apiKey}&language=en-US`;
+const apiKey = "6ab6d103cf2ba85d668cee4e2de24983";
+  const apiPathPopular = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`;
+  const apiPathSingle = `https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}`;
+  const apiPathTv = `http://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&sort_by=popularity.desc&with_genres=18`;
+  const apiContinue = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=pt-BR&query=Kagemusha,+a+Sombra+do+Samurai`;

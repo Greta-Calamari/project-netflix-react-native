@@ -3,16 +3,13 @@ import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, ScrollView, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Header from "../components/Header";
-import { Continue } from "../types";
+import { Continue, Movie, Tv } from "../types";
 import MovieBox from "../components/MovieBox";
 import { TvBox } from "../components/TvBox";
 import ContinueBox from "../components/ContinueBox";
+import { MovieResource ,TvResources, continueResources} from "../api";
 
 export default function Home() {
-  const apiKey = "6ab6d103cf2ba85d668cee4e2de24983";
-  const apiPathPopular = `https://api.themoviedb.org/3/movie/popular?api_key=${apiKey}`;
-  const apiPathTv = `http://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&sort_by=popularity.desc&with_genres=18`;
-  const apiContinue = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=pt-BR&query=Kagemusha,+a+Sombra+do+Samurai`;
 
   useEffect(() => {
     getMovies();
@@ -20,35 +17,33 @@ export default function Home() {
     getContinue();
   }, []);
 
-  const [movies, setMovies] = useState<Continue[]>([]);
+  const [movies, setMovies] = useState<Movie[]>([]);
+  const [tv, setTV] = useState<Tv[]>([]);
+  const [continues, setContinue] = useState<Continue>();
+
   async function getMovies() {
-    const result = await fetch(apiPathPopular);
-    const getResult = await result.json();
-    setMovies(getResult.results);
-    // console.log(getResult.results);
+    const popularMovies = await MovieResource.getPopulars()
+    setMovies(popularMovies);
   }
 
-  const [tv, setTV] = useState<Continue[]>([]);
+
   async function getTV() {
-    const result = await fetch(apiPathTv);
-    const getResult = await result.json();
-    setTV(getResult.results);
+    const tvShows = await TvResources.getTv()
+    setTV(tvShows);
   }
 
-  const [continues, setContinue] = useState<Continue[]>([]);
   async function getContinue() {
-    const result = await fetch(apiContinue);
-    const getResult = await result.json();
-    setContinue(getResult.results);
+    const continueMovie = await continueResources.getContinueData()
+    setContinue(continueMovie);
   }
 
-  const renderItem = ({ item }: { item: Continue }) => (
+  const renderItem = ({ item }: { item: Movie }) => (
     <MovieBox movie={item} />
   );
 
-  const renderItemTV = ({ item }: { item: Continue }) => <TvBox Tv={item} />;
+  const renderItemTV = ({ item }: { item: Tv }) => <TvBox Tv={item} />;
 
-  const renderItemContinue = ({ item }: { item: Continue }) => (
+  const renderItemContinue = ({ item }: { item:Continue }) => (
     <ContinueBox movieContinue={item} />
   );
   return (
@@ -97,7 +92,7 @@ export default function Home() {
       </View>
 
       <View>
-        <Text style={styles.textWhite}>Continue Watching</Text>
+        <Text style={styles.textWhite}>Movie Watching</Text>
         <FlatList
           data={continues}
           keyExtractor={(item) => item.id}

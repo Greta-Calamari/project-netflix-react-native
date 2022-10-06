@@ -6,11 +6,11 @@ import {
   TouchableHighlight,
 } from "react-native";
 import React from "react";
-import { Continue } from "../types";
+import { Movie } from "../types";
 import { useNavigation } from "@react-navigation/native";
 
 interface Props {
-  movie: Continue;
+  movie: Movie;
 }
 
 export default function MovieBox({ movie }: Props) {

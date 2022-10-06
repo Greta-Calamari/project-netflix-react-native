@@ -8,16 +8,19 @@ import {
   Pressable,
 } from "react-native";
 import React, { useEffect, useState } from "react";
-import { Continue, NavigationProps, SingleMovieRouteProps } from "../types";
+import { Actor, NavigationProps, SingleMovieRouteProps, Tv } from "../types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { getActionFromState, useNavigation, useRoute } from "@react-navigation/native";
 import { Rating } from "react-native-ratings";
+import { TvResources } from "../api";
 
 export default function SingleTv() {
   const route = useRoute();
   const navigation = useNavigation<NavigationProps>();
+  const [tvDetailData, setTvDetailData] = useState<Tv>();
+  const [actors, setActors] = useState<Actor>();
   const {
     name,
     poster_path,
@@ -31,26 +34,19 @@ export default function SingleTv() {
 
   useEffect(() => {
     getDetail();
+    getActors();
   }, []);
 
-  const apiKey = "6ab6d103cf2ba85d668cee4e2de24983";
-  const apiPathSingle = `https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}`;
-  const [movieDetailData, setMovieDetailData] = useState<Continue[]>([]);
+
   async function getDetail() {
-    navigation.navigate("SingleTv", {
-      generes,
-      id,
-      overview,
-      poster_path,
-      name,
-      runtime,
-      first_air_date,
-      vote_average,
-    });
-    const result = await fetch(apiPathSingle);
-    const getResult = await result.json();
-    setMovieDetailData(getResult.results);
-  }
+    const result = await TvResources.getTvdata(id)
+    setTvDetailData(result)
+    }
+
+  async function getActors() {
+    const result = await TvResources.getCastData(id)
+    setActors(result)
+    }
 
   return (
     <ScrollView style={styles.window}>
