@@ -1,56 +1,34 @@
-import {
-  View,
-  Text,
-  Image,
-  StyleSheet,
-  ScrollView,
-  Pressable,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import {
-  Actor,
-  Genres,
-  Movie,
-  NavigationProps,
-  SingleMovieRouteProps,
-} from "../types";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { MaterialIcons } from "@expo/vector-icons";
-import { LinearGradient } from "expo-linear-gradient";
-import { useNavigation, useRoute } from "@react-navigation/native";
-import { Rating } from "react-native-ratings";
-import { FlatList } from "react-native-gesture-handler";
-import { width } from "../utils/utils";
-import { MovieResource } from "../api";
-import ActorProfileBox from "../components/ActorProfileBox";
+import { View, Text, Image, StyleSheet, ScrollView, Pressable } from 'react-native'
+import React, { useEffect, useState } from 'react'
+import { Actor, Genres, Movie, NavigationProps, SingleMovieRouteProps } from '../types'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { MaterialIcons } from '@expo/vector-icons'
+import { LinearGradient } from 'expo-linear-gradient'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import { Rating } from 'react-native-ratings'
+import { FlatList } from 'react-native-gesture-handler'
+import { width } from '../utils/utils'
+import { MovieResource } from '../api'
+import ActorProfileBox from '../components/ActorProfileBox'
 
 export default function SingleMovie() {
-  const [actors, setActors] = useState<Actor[]>([]);
-  const [movieDetailData, setMovieDetailData] = useState<Movie>();
-  const [movieGenres , setMovieGenre] = useState<Genres[]>([])
-  const route = useRoute();
-  const navigation = useNavigation<NavigationProps>();
-  const {
-    id,
-    title,
-    release_date,
-    poster_path,
-    overview,
-    vote_average,
-    generes,
-    runtime,
-  } = route.params as SingleMovieRouteProps;
+  const [actors, setActors] = useState<Actor[]>([])
+  const [movieDetailData, setMovieDetailData] = useState<Movie>()
+  const [movieGenres, setMovieGenre] = useState<Genres[]>([])
+  const route = useRoute()
+  const navigation = useNavigation<NavigationProps>()
+  const { id, title, release_date, poster_path, overview, vote_average, generes, runtime } =
+    route.params as SingleMovieRouteProps
 
   useEffect(() => {
     getDetail()
     getActors()
     getGenre()
-  }, []);
-  
-  
+  }, [])
+
   async function getDetail() {
-    const result = await MovieResource.getMovieData(id);
-    setMovieDetailData(result);
+    const result = await MovieResource.getMovieData(id)
+    setMovieDetailData(result)
   }
 
   async function getActors() {
@@ -61,22 +39,23 @@ export default function SingleMovie() {
     const result = await MovieResource.getMovieGenre(id)
     setMovieGenre(result)
   }
+  // const storeData = async (value: any) => {
+  //   try {
+  //     const jsonValue = JSON.stringify(value)
+  //     await AsyncStorage.setItem('@storage_Key', jsonValue)
+  //   } catch (e) {
 
-  const renderActor = ({ item }: { item: Actor }) => (
-    <ActorProfileBox actor={item} />
-  )
-  const renderGeneres = ({ item }:any )=> (
-    <GenreNames name={item.name} id={""} />
-  )
-  const GenreNames = ({name}:Genres) => (
+  //   }
+  // }
+
+  const renderActor = ({ item }: { item: Actor }) => <ActorProfileBox actor={item} />
+  const renderGeneres = ({ item }: any) => <GenreNames name={item.name} id={''} />
+  const GenreNames = ({ name }: Genres) => (
     <View>
       <Text style={styles.subGenre}>{name}</Text>
     </View>
-  );
-  // const App = () => {
-  //   const renderItem = ({ item }) => (
-  //     <Item title={item.title} />
-  //   );
+  )
+
   return (
     <ScrollView style={styles.window}>
       <View style={styles.container}>
@@ -87,31 +66,26 @@ export default function SingleMovie() {
           }}
         />
         <LinearGradient
-          colors={["rgba(23, 29, 33, 1)", "transparent"]}
+          colors={['rgba(23, 29, 33, 1)', 'transparent']}
           style={[
             styles.background,
             {
-              transform: [{ rotateY: "180deg" }, { rotateZ: "180deg" }],
+              transform: [{ rotateY: '180deg' }, { rotateZ: '180deg' }],
             },
           ]}
         />
-        <MaterialCommunityIcons
-          name="bookmark-minus-outline"
-          style={styles.book}
-        />
+        {/* <View style={styles.book}>
+          <FavouriteBox />
+        </View> */}
 
-        <MaterialIcons
-          name="keyboard-arrow-left"
-          style={styles.chevron}
-          onPress={() => navigation.goBack()}
-        />
+        <MaterialIcons name="keyboard-arrow-left" style={styles.chevron} onPress={() => navigation.goBack()} />
       </View>
       <LinearGradient
-        colors={["rgba(0,0,0,1)", "transparent"]}
+        colors={['rgba(0,0,0,1)', 'transparent']}
         style={[
           styles.background,
           {
-            transform: [{ rotateY: "180deg" }, { rotateZ: "180deg" }],
+            transform: [{ rotateY: '180deg' }, { rotateZ: '180deg' }],
           },
         ]}
       />
@@ -123,13 +97,11 @@ export default function SingleMovie() {
         <Text style={styles.subDate}>{release_date}</Text>
         <View>
           <FlatList
-          data={movieGenres}
-          renderItem={renderGeneres}
-          keyExtractor={(item) => item.id}
-          horizontal
-          >
-
-          </FlatList>
+            data={movieGenres}
+            renderItem={renderGeneres}
+            keyExtractor={(item) => item.id}
+            horizontal
+          ></FlatList>
         </View>
         <Text style={styles.subDate}></Text>
       </View>
@@ -156,16 +128,8 @@ export default function SingleMovie() {
       <View>
         <Text style={styles.cast}>Cast</Text>
         <View style={styles.wrapActors}>
-        <FlatList
-        data={actors}
-        renderItem={renderActor}
-        keyExtractor={(item) => item.id}
-        horizontal
-        >
-        </FlatList>
-
+          <FlatList data={actors} renderItem={renderActor} keyExtractor={(item) => item.id} horizontal></FlatList>
         </View>
-        
       </View>
 
       <View style={styles.btnCont}>
@@ -174,95 +138,95 @@ export default function SingleMovie() {
         </Pressable>
       </View>
     </ScrollView>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
   window: {
-    backgroundColor: "rgb(23, 29, 33)",
+    backgroundColor: 'rgb(23, 29, 33)',
   },
   image: {
     width: width,
     height: 600,
   },
   container: {
-    position: "relative",
+    position: 'relative',
   },
 
   book: {
-    position: "absolute",
+    position: 'absolute',
     right: 20,
     top: 70,
-    color: "white",
+    color: 'white',
     fontSize: 30,
   },
   chevron: {
-    position: "absolute",
+    position: 'absolute',
     left: 20,
     top: 70,
-    color: "white",
+    color: 'white',
     fontSize: 30,
   },
   background: {
-    position: "absolute",
+    position: 'absolute',
     left: 0,
     right: 0,
     bottom: 0,
     height: 300,
   },
   movieTitle: {
-    textAlign: "center",
+    textAlign: 'center',
     fontSize: 40,
-    fontWeight: "bold",
-    color: "white",
+    fontWeight: 'bold',
+    color: 'white',
   },
 
   subContainer: {
-    position: "relative",
+    position: 'relative',
     bottom: 100,
-    flexDirection: "row",
-    justifyContent: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
   subDate: {
-    color: "grey",
+    color: 'grey',
   },
   subContainer2: {
-    flexDirection: "row",
-    justifyContent: "center",
-    position: "relative",
+    flexDirection: 'row',
+    justifyContent: 'center',
+    position: 'relative',
     bottom: 90,
   },
   star: {
     fontSize: 30,
     marginRight: 10,
-    color: "#FDC432",
+    color: '#FDC432',
   },
   subOverview: {
-    color: "grey",
+    color: 'grey',
     margin: 10,
   },
   button: {
-    backgroundColor: "#E11A38",
+    backgroundColor: '#E11A38',
     padding: 20,
     width: 200,
-    flexDirection: "row",
-    justifyContent: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
   },
 
   textBtn: {
-    color: "white",
+    color: 'white',
     fontSize: 20,
   },
   btnCont: {
-    flexDirection: "row",
-    justifyContent: "center",
+    flexDirection: 'row',
+    justifyContent: 'center',
     marginBottom: 30,
   },
   cast: {
-    color: "white",
+    color: 'white',
     fontSize: 20,
     marginLeft: 10,
-    position: "relative",
+    position: 'relative',
     bottom: 70,
   },
   rating: {
@@ -272,19 +236,18 @@ const styles = StyleSheet.create({
     height: 40,
     marginTop: 5,
     width: 20,
-    backgroundColor: "rgb(23, 29, 33)",
+    backgroundColor: 'rgb(23, 29, 33)',
     zIndex: 1000,
   },
-  casts:{
-    color:"white"
+  casts: {
+    color: 'white',
   },
-  wrapActors:{
-    marginTop:-50,
-    marginBottom:30,
-
+  wrapActors: {
+    marginTop: -50,
+    marginBottom: 30,
   },
-  subGenre:{
-    marginLeft:10,
-    color:"grey",
-  }
-});
+  subGenre: {
+    marginLeft: 10,
+    color: 'grey',
+  },
+})

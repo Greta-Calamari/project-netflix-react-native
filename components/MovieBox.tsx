@@ -1,36 +1,23 @@
-import {
-  Text,
-  Image,
-  StyleSheet,
-  View,
-  TouchableHighlight,
-} from "react-native";
-import React from "react";
-import { Movie } from "../types";
-import { useNavigation } from "@react-navigation/native";
+import { Text, Image, StyleSheet, View, TouchableHighlight, Pressable } from 'react-native'
+import React from 'react'
+import { Movie } from '../types'
+import { useNavigation } from '@react-navigation/native'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 interface Props {
-  movie: Movie;
+  movie: Movie
+  handleFavouritesClick: any
 }
 
-export default function MovieBox({ movie }: Props) {
-  const {
-    title,
-    poster_path,
-    release_date,
-    id,
-    overview,
-    vote_average,
-    runtime,
-    generes,
-  } = movie;
-  const navigation = useNavigation();
+export default function MovieBox({ movie, handleFavouritesClick }: Props) {
+  const { title, poster_path, release_date, id, overview, vote_average, runtime, generes } = movie
+  const navigation = useNavigation()
 
   return (
     <View>
       <TouchableHighlight
         onPress={() =>
-          navigation.navigate("SingleMovie", {
+          navigation.navigate('SingleMovie', {
             title,
             poster_path,
             release_date,
@@ -52,9 +39,12 @@ export default function MovieBox({ movie }: Props) {
       <View style={styles.wrap}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.date}>{release_date}</Text>
+        <Pressable onPress={() => handleFavouritesClick(title)}>
+          <MaterialCommunityIcons name="bookmark-minus-outline" style={styles.book} />
+        </Pressable>
       </View>
     </View>
-  );
+  )
 }
 
 const styles = StyleSheet.create({
@@ -65,13 +55,17 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   title: {
-    color: "white",
+    color: 'white',
   },
   date: {
-    color: "grey",
+    color: 'grey',
   },
   wrap: {
     marginLeft: 20,
-    width:100,
+    width: 100,
   },
-});
+  book: {
+    color: 'white',
+    fontSize: 30,
+  },
+})
