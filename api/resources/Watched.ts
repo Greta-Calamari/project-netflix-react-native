@@ -1,4 +1,4 @@
-import { Actor, Continue } from "../../types";
+import { Actor, Watched } from "../../types";
 import { apiKey } from "../../utils/config";
 import api from "../api";
 
@@ -6,8 +6,8 @@ export default class continueResources {
 
     static endpoint = "/movie"
 
-    static getContinueData(): Promise<Continue[]>{
-        return api.get(`/search${this.endpoint}?api_key=${apiKey}&language=pt-BR&query=Kagemusha,+a+Sombra+do+Samurai`).then(res => res.data)
+    static getWatched(): Promise<Watched[]>{
+        return api.get(`/search${this.endpoint}?api_key=${apiKey}&language=pt-BR&query=Kagemusha,+a+Sombra+do+Samurai`).then(res => res.data.results)
     }
     
     static getCastData(id:string): Promise<Actor>{

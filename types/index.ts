@@ -22,9 +22,9 @@ export interface Tv{
     generes:string
 
 }
-export interface Continue{
+export interface Watched{
     id:string
-    name?:string
+    name:string
     title:string
     poster_path:string
     first_air_date:string
@@ -39,6 +39,11 @@ export interface Actor{
     id: string
     original_name:string
     character:string
+    profile_path:string
+}
+export interface Genres{
+    id:string
+    name:string
 }
 export interface SingleMovieRouteProps {
     id: string;

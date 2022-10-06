@@ -72,5 +72,6 @@ const styles = StyleSheet.create({
   },
   wrap: {
     marginLeft: 20,
+    width:100,
   },
 });

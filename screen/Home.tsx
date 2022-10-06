@@ -3,23 +3,23 @@ import React, { useState, useEffect } from "react";
 import { Text, View, StyleSheet, ScrollView, FlatList } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import Header from "../components/Header";
-import { Continue, Movie, Tv } from "../types";
+import { Watched, Movie, Tv } from "../types";
 import MovieBox from "../components/MovieBox";
 import { TvBox } from "../components/TvBox";
-import ContinueBox from "../components/ContinueBox";
+import ContinueBox from "../components/WatchedBox";
 import { MovieResource ,TvResources, continueResources} from "../api";
 
 export default function Home() {
 
   useEffect(() => {
     getMovies();
-    getTV();
-    getContinue();
+    getTvShows();
+    getWatched();
   }, []);
 
   const [movies, setMovies] = useState<Movie[]>([]);
-  const [tv, setTV] = useState<Tv[]>([]);
-  const [continues, setContinue] = useState<Continue[]>([]);
+  const [tvShows, setTvShows] = useState<Tv[]>([]);
+  const [continues, setContinue] = useState<Watched[]>([]);
 
   async function getMovies() {
     const popularMovies = await MovieResource.getPopulars()
@@ -27,25 +27,31 @@ export default function Home() {
   }
 
 
-  async function getTV() {
-    const tvShows = await TvResources.getTv()
-    setTV(tvShows);
+  async function getTvShows() {
+    const tvShows = await TvResources.getTvShows()
+    setTvShows(tvShows);
   }
 
-  async function getContinue() {
-    const continueMovie = await continueResources.getContinueData()
+  async function getWatched() {
+    const continueMovie = await continueResources.getWatched()
     setContinue(continueMovie);
   }
 
   const renderItem = ({ item }: { item: Movie }) => (
     <MovieBox movie={item} />
-  );
+  )
+  
+  
 
-  const renderItemTV = ({ item }: { item: Tv }) => <TvBox Tv={item} />;
+  const renderItemTV = ({ item }: { item: Tv }) => ( 
+    <TvBox Tv={item}/>
+  )
 
-  const renderItemContinue = ({ item }: { item:Continue }) => (
-    <ContinueBox movieContinue={item} />
-  );
+  const renderItemContinue = ({ item }: { item:Watched }) => ( 
+    <ContinueBox movieContinue={item}/>
+  )
+    
+ 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
       <StatusBar translucent backgroundColor="transparent" />
@@ -84,7 +90,7 @@ export default function Home() {
       <View>
         <Text style={styles.textWhite}>Tv Show</Text>
         <FlatList
-          data={tv}
+          data={tvShows}
           keyExtractor={(item) => item.id}
           renderItem={renderItemTV}
           horizontal
@@ -101,7 +107,8 @@ export default function Home() {
         ></FlatList>
       </View>
 
-      <View>
+      <View> 
+      
         <Header/>
       </View>
     </ScrollView>

@@ -7,6 +7,8 @@ import Saved from "../screen/Saved";
 import User from "../screen/User";
 import SingleMovie from "../screen/SingleMovie";
 import SingleTv from "../screen/SingleTv";
+import SingleWatched from "../screen/SingleWatched";
+
 
 export default function Navigation() {
   return (
@@ -47,6 +49,12 @@ export default function Navigation() {
           component={SingleTv}
           options={{ title: "SingleTv" }}
         />
+        <Stack.Screen
+        name="SingleWatched"
+        component={SingleWatched}
+        options={{ title: "SingleWatched" }}
+      />
+        
       </Stack.Navigator>
     </NavigationContainer>
   );

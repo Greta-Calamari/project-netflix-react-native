@@ -9,6 +9,7 @@ import {
 import React, { useEffect, useState } from "react";
 import {
   Actor,
+  Genres,
   Movie,
   NavigationProps,
   SingleMovieRouteProps,
@@ -18,14 +19,15 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { Rating } from "react-native-ratings";
-import axios from "axios";
 import { FlatList } from "react-native-gesture-handler";
 import { width } from "../utils/utils";
 import { MovieResource } from "../api";
+import ActorProfileBox from "../components/ActorProfileBox";
 
-export default function SingleMovie(this: any) {
-  const [actors, setActors] = useState<Actor>();
+export default function SingleMovie() {
+  const [actors, setActors] = useState<Actor[]>([]);
   const [movieDetailData, setMovieDetailData] = useState<Movie>();
+  const [movieGenres , setMovieGenre] = useState<Genres[]>([])
   const route = useRoute();
   const navigation = useNavigation<NavigationProps>();
   const {
@@ -40,8 +42,9 @@ export default function SingleMovie(this: any) {
   } = route.params as SingleMovieRouteProps;
 
   useEffect(() => {
-    getDetail();
-    getActors();
+    getDetail()
+    getActors()
+    getGenre()
   }, []);
   
   
@@ -54,19 +57,26 @@ export default function SingleMovie(this: any) {
     const result = await MovieResource.getCastData(id)
     setActors(result)
   }
+  async function getGenre() {
+    const result = await MovieResource.getMovieGenre(id)
+    setMovieGenre(result)
+  }
 
-  const ActorProfile = ({ original_name , character}:Actor) => (
-      <View>
-         <Text style={styles.casts}>{character}</Text>
-         <Text></Text>
-      </View>
+  const renderActor = ({ item }: { item: Actor }) => (
+    <ActorProfileBox actor={item} />
+  )
+  const renderGeneres = ({ item }:any )=> (
+    <GenreNames name={item.name} id={""} />
+  )
+  const GenreNames = ({name}:Genres) => (
+    <View>
+      <Text style={styles.subGenre}>{name}</Text>
+    </View>
   );
-
-  const renderActor = ({ item }:any) => (
-    <ActorProfile  original_name={item.original_name} character={item.character} id={""} />
-  );
-
-
+  // const App = () => {
+  //   const renderItem = ({ item }) => (
+  //     <Item title={item.title} />
+  //   );
   return (
     <ScrollView style={styles.window}>
       <View style={styles.container}>
@@ -111,7 +121,16 @@ export default function SingleMovie(this: any) {
 
       <View style={styles.subContainer}>
         <Text style={styles.subDate}>{release_date}</Text>
-        <Text style={styles.subDate}>{runtime}</Text>
+        <View>
+          <FlatList
+          data={movieGenres}
+          renderItem={renderGeneres}
+          keyExtractor={(item) => item.id}
+          horizontal
+          >
+
+          </FlatList>
+        </View>
         <Text style={styles.subDate}></Text>
       </View>
       <View style={styles.subContainer2}>
@@ -136,6 +155,7 @@ export default function SingleMovie(this: any) {
 
       <View>
         <Text style={styles.cast}>Cast</Text>
+        <View style={styles.wrapActors}>
         <FlatList
         data={actors}
         renderItem={renderActor}
@@ -143,6 +163,9 @@ export default function SingleMovie(this: any) {
         horizontal
         >
         </FlatList>
+
+        </View>
+        
       </View>
 
       <View style={styles.btnCont}>
@@ -240,7 +263,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 10,
     position: "relative",
-    bottom: 90,
+    bottom: 70,
   },
   rating: {
     marginTop: 6,
@@ -254,5 +277,14 @@ const styles = StyleSheet.create({
   },
   casts:{
     color:"white"
+  },
+  wrapActors:{
+    marginTop:-50,
+    marginBottom:30,
+
+  },
+  subGenre:{
+    marginLeft:10,
+    color:"grey",
   }
 });

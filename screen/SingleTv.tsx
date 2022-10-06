@@ -6,21 +6,23 @@ import {
   Dimensions,
   ScrollView,
   Pressable,
+  FlatList,
 } from "react-native";
 import React, { useEffect, useState } from "react";
 import { Actor, NavigationProps, SingleMovieRouteProps, Tv } from "../types";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { MaterialIcons } from "@expo/vector-icons";
 import { LinearGradient } from "expo-linear-gradient";
-import { getActionFromState, useNavigation, useRoute } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Rating } from "react-native-ratings";
 import { TvResources } from "../api";
+import ActorProfileBox from "../components/ActorProfileBox";
 
 export default function SingleTv() {
   const route = useRoute();
   const navigation = useNavigation<NavigationProps>();
   const [tvDetailData, setTvDetailData] = useState<Tv>();
-  const [actors, setActors] = useState<Actor>();
+  const [actors, setActors] = useState<Actor[]>([]);
   const {
     name,
     poster_path,
@@ -47,6 +49,10 @@ export default function SingleTv() {
     const result = await TvResources.getCastData(id)
     setActors(result)
     }
+    
+  const renderActor = ({ item }: { item: Actor }) => (
+      <ActorProfileBox actor={item} />
+    )
 
   return (
     <ScrollView style={styles.window}>
@@ -115,11 +121,18 @@ export default function SingleTv() {
       </View>
 
       <View>
-        <View>
-          <Text style={styles.cast}>Cast</Text>
-          <Text style={styles.cast}></Text>
-          <Text style={styles.cast}></Text>
+        <Text style={styles.cast}>Cast</Text>
+        <View style={styles.wrapActors}>
+        <FlatList
+        data={actors}
+        renderItem={renderActor}
+        keyExtractor={(item) => item.id}
+        horizontal
+        >
+        </FlatList>
+
         </View>
+        
       </View>
 
       <View style={styles.btnCont}>
@@ -212,7 +225,8 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "center",
     position: "relative",
-    bottom: 90,
+    marginTop:20,
+    bottom: 20,
   },
   cast: {
     color: "white",
@@ -231,4 +245,9 @@ const styles = StyleSheet.create({
     backgroundColor: "rgb(23, 29, 33)",
     zIndex: 1000,
   },
+  wrapActors:{
+    marginTop:-70,
+    marginBottom:20,
+
+  }
 });

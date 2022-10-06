@@ -55,9 +55,9 @@ export default function Header() {
 const styles = StyleSheet.create({
   container: {
     backgroundColor: "#DA1A37",
-    marginTop: 20,
+    marginTop: 30,
     marginBottom: 10,
-    marginLeft: 20,
+    marginLeft: 50,
     borderRadius: 50,
     width: 300,
     height: 60,
@@ -67,10 +67,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginLeft: 20,
     borderRadius: 50,
-    backgroundColor: "#C0223A",
+    // backgroundColor: "#C0223A",
     width: 85,
-    marginTop: 10,
-    height: 40,
+    marginTop: 15,
   },
   text: {
     color: "white",

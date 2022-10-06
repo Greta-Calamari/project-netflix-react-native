@@ -7,3 +7,4 @@
     "semi": false,
     "overrides": [{ "files": "src/config/translations/*.ts", "options": { "printWidth": 2000, "singleQuote": false } }]
   }
+
