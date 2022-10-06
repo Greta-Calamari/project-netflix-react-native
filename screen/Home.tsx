@@ -19,7 +19,7 @@ export default function Home() {
 
   const [movies, setMovies] = useState<Movie[]>([]);
   const [tv, setTV] = useState<Tv[]>([]);
-  const [continues, setContinue] = useState<Continue>();
+  const [continues, setContinue] = useState<Continue[]>([]);
 
   async function getMovies() {
     const popularMovies = await MovieResource.getPopulars()
@@ -102,7 +102,7 @@ export default function Home() {
       </View>
 
       <View>
-        <Header />
+        <Header/>
       </View>
     </ScrollView>
   );

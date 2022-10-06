@@ -24,7 +24,7 @@ export interface Tv{
 }
 export interface Continue{
     id:string
-    name:string
+    name?:string
     title:string
     poster_path:string
     first_air_date:string
