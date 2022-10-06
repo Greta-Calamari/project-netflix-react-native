@@ -1,4 +1,4 @@
-import {Actor, Tv } from "../../types"
+import {Actor, Genres, Tv } from "../../types"
 import { apiKey } from "../../utils/config"
 import api from "../api"
 
@@ -14,5 +14,8 @@ export default class TvResources{
     }
     static getCastData(id:string): Promise<Actor[]>{
         return api.get(`/movie/${id}/casts?api_key=${apiKey}&language=en-US`).then(res=>res.data.cast)
+    }
+    static getMovieGenre(id:string): Promise<Genres[]>{
+        return api.get(`${this.endpoint}/${id}?api_key=${apiKey}`).then(res => res.data.genres)
     }
 }

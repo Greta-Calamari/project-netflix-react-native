@@ -9,18 +9,19 @@ import {
     FlatList,
   } from "react-native";
   import React, { useEffect, useState } from "react";
-  import { Actor, NavigationProps, SingleMovieRouteProps, Tv } from "../types";
+  import { Actor, Genres, NavigationProps, SingleMovieRouteProps, Tv } from "../types";
   import { MaterialCommunityIcons } from "@expo/vector-icons";
   import { MaterialIcons } from "@expo/vector-icons";
   import { LinearGradient } from "expo-linear-gradient";
   import { useNavigation, useRoute } from "@react-navigation/native";
   import { Rating } from "react-native-ratings";
-  import { TvResources } from "../api";
+  import { continueResources, TvResources } from "../api";
   import ActorProfileBox from "../components/ActorProfileBox";
   
   export default function SingleTv() {
     const route = useRoute();
     const navigation = useNavigation<NavigationProps>();
+    const [movieGenres , setMovieGenre] = useState<Genres[]>([])
     const [tvDetailData, setTvDetailData] = useState<Tv>();
     const [actors, setActors] = useState<Actor[]>([]);
     const {
@@ -35,8 +36,9 @@ import {
     } = route.params as SingleMovieRouteProps;
   
     useEffect(() => {
-      getDetail();
-      getActors();
+      getDetail()
+      getActors()
+      getGenre()
     }, []);
   
   
@@ -49,10 +51,23 @@ import {
       const result = await TvResources.getCastData(id)
       setActors(result)
       }
+    async function getGenre() {
+        const result = await continueResources.getMovieGenre(id)
+        setMovieGenre(result)
+      }
       
     const renderActor = ({ item }: { item: Actor }) => (
         <ActorProfileBox actor={item} />
       )
+
+    const renderGeneres = ({ item }:any )=> (
+        <GenreNames name={item.name} id={""} />
+      )
+    const GenreNames = ({name}:Genres) => (
+        <View>
+          <Text style={styles.subGenre}>{name}</Text>
+        </View>
+      );
   
     return (
       <ScrollView style={styles.window}>
@@ -98,7 +113,16 @@ import {
         <View style={styles.subContainer}>
           <Text style={styles.subDate}>{first_air_date}</Text>
           <Text style={styles.subDate}>{runtime}</Text>
-          <Text style={styles.subDate}></Text>
+          <View>
+          <FlatList
+          data={movieGenres}
+          renderItem={renderGeneres}
+          keyExtractor={(item) => item.id}
+          horizontal
+          >
+
+          </FlatList>
+        </View>
         </View>
         <View style={styles.subContainer2}>
           <Text style={styles.star}>{vote_average}</Text>
@@ -249,6 +273,10 @@ import {
       marginTop:-70,
       marginBottom:20,
   
+    },
+    subGenre:{
+      marginLeft:10,
+      color:"grey",
     }
   });
   
