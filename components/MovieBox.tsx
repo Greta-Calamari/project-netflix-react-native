@@ -39,7 +39,7 @@ export default function MovieBox({ movie, handleFavouritesClick }: Props) {
       <View style={styles.wrap}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.date}>{release_date}</Text>
-        <Pressable onPress={() => handleFavouritesClick(JSON.stringify(movie))}>
+        <Pressable style={styles.add} onPress={() => handleFavouritesClick(movie)}>
           <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.book} />
         </Pressable>
       </View>
@@ -67,5 +67,10 @@ const styles = StyleSheet.create({
   book: {
     color: 'white',
     fontSize: 30,
+  },
+  add: {
+    position: 'absolute',
+    left: 100,
+    bottom: 10,
   },
 })

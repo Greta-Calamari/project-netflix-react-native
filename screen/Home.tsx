@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useState, useEffect } from 'react'
-import { Text, View, StyleSheet, ScrollView, FlatList, ActivityIndicator } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, FlatList, ActivityIndicator, Pressable } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import Header from '../components/Header'
 import { Watched, Movie, Tv } from '../types'
@@ -9,10 +9,13 @@ import { TvBox } from '../components/TvBox'
 import { MovieResource, TvResources, WatchedResources } from '../api'
 import LoaderBox from '../components/LoaderBox'
 import AsyncStorage from '@react-native-async-storage/async-storage'
-import FavouriteBox from '../components/FavouriteBox'
 import WatchedBox from '../components/WatchedBox'
+import { AntDesign } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
 
 export default function Home() {
+  const navigation = useNavigation()
+
   const [movies, setMovies] = useState<Movie[]>([])
   const [tvShows, setTvShows] = useState<Tv[]>([])
   const [continues, setContinue] = useState<Watched[]>([])
@@ -29,7 +32,7 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    console.log(favorites)
+    // console.log(favorites)
   }, [favorites])
 
   async function getMovies() {
@@ -57,9 +60,7 @@ export default function Home() {
     try {
       const jsonValue = await AsyncStorage.getItem('id')
       return jsonValue != null ? JSON.parse(jsonValue) : null
-    } catch (e) {
-      // read error
-    }
+    } catch (e) {}
 
     console.log('Done.')
   }
@@ -98,6 +99,12 @@ export default function Home() {
           }}
         />
       </View>
+      <View>
+        <Pressable onPress={() => navigation.navigate('FavouriteBox', { favMovieArray: favorites })}>
+          <Text style={styles.textWhite}>Vai ai tuoi preferiti</Text>
+        </Pressable>
+        <AntDesign name="hearto" style={styles.heart} />
+      </View>
 
       <View>
         <Text style={styles.textWhite}>Popular Movie</Text>
@@ -129,12 +136,6 @@ export default function Home() {
       </View>
 
       <View>
-        <Text style={styles.textWhite}>Preferiti</Text>
-
-        <FavouriteBox favList={favorites} />
-      </View>
-
-      <View>
         <Header />
       </View>
     </ScrollView>
@@ -150,5 +151,12 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     margin: 10,
+  },
+  heart: {
+    color: 'red',
+    fontSize: 24,
+    position: 'absolute',
+    left: 180,
+    top: 10,
   },
 })

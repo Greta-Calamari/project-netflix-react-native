@@ -1,7 +1,6 @@
 import { View, Text, Image, StyleSheet, ScrollView, Pressable } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import { Actor, Genres, Movie, NavigationProps, SingleMovieRouteProps } from '../types'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { MaterialIcons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation, useRoute } from '@react-navigation/native'
@@ -39,14 +38,6 @@ export default function SingleMovie() {
     const result = await MovieResource.getMovieGenre(id)
     setMovieGenre(result)
   }
-  // const storeData = async (value: any) => {
-  //   try {
-  //     const jsonValue = JSON.stringify(value)
-  //     await AsyncStorage.setItem('@storage_Key', jsonValue)
-  //   } catch (e) {
-
-  //   }
-  // }
 
   const renderActor = ({ item }: { item: Actor }) => <ActorProfileBox actor={item} />
   const renderGeneres = ({ item }: any) => <GenreNames name={item.name} id={''} />
@@ -74,9 +65,6 @@ export default function SingleMovie() {
             },
           ]}
         />
-        {/* <View style={styles.book}>
-          <FavouriteBox />
-        </View> */}
 
         <MaterialIcons name="keyboard-arrow-left" style={styles.chevron} onPress={() => navigation.goBack()} />
       </View>
