@@ -4,11 +4,12 @@ import { View, StyleSheet, Text, Image } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { FavouriteStackParams, NavigationProps } from '../types'
 import { FlatList } from 'react-native-gesture-handler'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 export default function FavouriteBox() {
   const route = useRoute()
   const navigation = useNavigation<NavigationProps>()
-  const { favMovieArray } = route.params as FavouriteStackParams
+  const { favMovieArray, handleRemove } = route.params as FavouriteStackParams
 
   const renderItemFav = ({ item }: any) => <FavMovie title={item.title} poster_path={item.poster_path} />
   const FavMovie = ({ title, poster_path }: any) => (
@@ -20,6 +21,7 @@ export default function FavouriteBox() {
         }}
       />
       <Text style={styles.fav}>{title}</Text>
+      <MaterialCommunityIcons onPress={() => handleRemove()} name="bookmark-minus-outline" style={styles.book} />
     </View>
   )
   return (
@@ -38,6 +40,7 @@ const styles = StyleSheet.create({
   fav: {
     color: 'white',
     marginLeft: 15,
+    marginTop: 10,
   },
   chevron: {
     position: 'absolute',
@@ -60,6 +63,11 @@ const styles = StyleSheet.create({
   title: {
     position: 'relative',
     top: 130,
+    color: 'white',
+    fontSize: 30,
+    marginLeft: 30,
+  },
+  book: {
     color: 'white',
     fontSize: 30,
     marginLeft: 30,

@@ -60,6 +60,7 @@ export interface SingleMovieRouteProps {
 }
 export interface FavouriteStackParams {
   favMovieArray: any
+  handleRemove: any
 }
 export type StackParamsList = {
   Home: undefined

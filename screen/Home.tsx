@@ -32,7 +32,7 @@ export default function Home() {
   }, [])
 
   useEffect(() => {
-    // console.log(favorites)
+    console.log(favorites)
   }, [favorites])
 
   async function getMovies() {
@@ -68,6 +68,17 @@ export default function Home() {
     AsyncStorage.setItem('id', JSON.stringify([...favorites, item]))
     setFavorites([...favorites, item])
   }
+  const removeMovie = async (id: any) => {
+    try {
+      AsyncStorage.removeItem('id')
+
+      setFavorites([...favorites, id])
+    } catch (e) {
+      // remove error
+    }
+
+    console.log('Done.')
+  }
 
   const renderItem = ({ item }: { item: Movie }) => <MovieBox movie={item} handleFavouritesClick={addToFavorites} />
 
@@ -100,7 +111,9 @@ export default function Home() {
         />
       </View>
       <View>
-        <Pressable onPress={() => navigation.navigate('FavouriteBox', { favMovieArray: favorites })}>
+        <Pressable
+          onPress={() => navigation.navigate('FavouriteBox', { favMovieArray: favorites, handleRemove: removeMovie })}
+        >
           <Text style={styles.textWhite}>Vai ai tuoi preferiti</Text>
         </Pressable>
         <AntDesign name="hearto" style={styles.heart} />
