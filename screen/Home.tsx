@@ -6,20 +6,13 @@ import Header from '../components/Header'
 import { Watched, Movie, Tv } from '../types'
 import MovieBox from '../components/MovieBox'
 import { TvBox } from '../components/TvBox'
-import ContinueBox from '../components/WatchedBox'
 import { MovieResource, TvResources, WatchedResources } from '../api'
 import LoaderBox from '../components/LoaderBox'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import FavouriteBox from '../components/FavouriteBox'
+import WatchedBox from '../components/WatchedBox'
 
 export default function Home() {
-  useEffect(() => {
-    getMovies()
-    getTvShows()
-    getWatched()
-    getMyObject()
-  }, [])
-
   const [movies, setMovies] = useState<Movie[]>([])
   const [tvShows, setTvShows] = useState<Tv[]>([])
   const [continues, setContinue] = useState<Watched[]>([])
@@ -27,6 +20,17 @@ export default function Home() {
   const [isLoadingTvShows, setIsLoadingTvShows] = useState(true)
   const [isLoadingWatched, setisLoadingWatched] = useState(true)
   const [favorites, setFavorites] = useState<Movie[]>([])
+
+  useEffect(() => {
+    getMovies()
+    getTvShows()
+    getWatched()
+    getMyObject()
+  }, [])
+
+  useEffect(() => {
+    console.log(favorites)
+  }, [favorites])
 
   async function getMovies() {
     setIsLoadingMovies(true)
@@ -51,7 +55,7 @@ export default function Home() {
 
   const getMyObject = async () => {
     try {
-      const jsonValue = await AsyncStorage.getItem('')
+      const jsonValue = await AsyncStorage.getItem('id')
       return jsonValue != null ? JSON.parse(jsonValue) : null
     } catch (e) {
       // read error
@@ -60,16 +64,15 @@ export default function Home() {
     console.log('Done.')
   }
   const addToFavorites = async (item: Movie) => {
-    await AsyncStorage.setItem('id', JSON.stringify([...favorites, item]))
+    AsyncStorage.setItem('id', JSON.stringify([...favorites, item]))
     setFavorites([...favorites, item])
-    console.log(favorites)
   }
 
   const renderItem = ({ item }: { item: Movie }) => <MovieBox movie={item} handleFavouritesClick={addToFavorites} />
 
   const renderItemTV = ({ item }: { item: Tv }) => <TvBox Tv={item} />
 
-  const renderItemContinue = ({ item }: { item: Watched }) => <ContinueBox movieContinue={item} />
+  const renderItemContinue = ({ item }: { item: Watched }) => <WatchedBox movieContinue={item} />
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>

@@ -39,8 +39,8 @@ export default function MovieBox({ movie, handleFavouritesClick }: Props) {
       <View style={styles.wrap}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.date}>{release_date}</Text>
-        <Pressable onPress={() => handleFavouritesClick(title)}>
-          <MaterialCommunityIcons name="bookmark-minus-outline" style={styles.book} />
+        <Pressable onPress={() => handleFavouritesClick(JSON.stringify(movie))}>
+          <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.book} />
         </Pressable>
       </View>
     </View>
