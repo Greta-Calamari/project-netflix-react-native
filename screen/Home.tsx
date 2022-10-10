@@ -71,8 +71,8 @@ export default function Home() {
   const removeMovie = async (index: number) => {
     try {
       AsyncStorage.removeItem('id')
-      setFavorites(favorites.splice(index, 1))
-      console.log(favorites)
+      setFavorites(favorites.splice(index, -1))
+      // console.log(favorites)
     } catch (e) {
       // remove error
     }
