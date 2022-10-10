@@ -68,11 +68,11 @@ export default function Home() {
     AsyncStorage.setItem('id', JSON.stringify([...favorites, item]))
     setFavorites([...favorites, item])
   }
-  const removeMovie = async (id: any) => {
+  const removeMovie = async (index: number) => {
     try {
       AsyncStorage.removeItem('id')
-
-      setFavorites([...favorites, id])
+      setFavorites(favorites.splice(index, 1))
+      console.log(favorites)
     } catch (e) {
       // remove error
     }
