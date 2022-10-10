@@ -1,5 +1,5 @@
 import { useNavigation, useRoute } from '@react-navigation/native'
-import React from 'react'
+import React, { useState } from 'react'
 import { View, StyleSheet, Text, Image } from 'react-native'
 import { MaterialIcons } from '@expo/vector-icons'
 import { FavouriteStackParams, NavigationProps } from '../types'
@@ -9,7 +9,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 export default function FavouriteBox() {
   const route = useRoute()
   const navigation = useNavigation<NavigationProps>()
-  const { favMovieArray, handleRemove } = route.params as FavouriteStackParams
+  const { favMovieArray, handleRemove, refreshFlatlist } = route.params as FavouriteStackParams
 
   const renderItemFav = ({ item }: any) => <FavMovie title={item.title} poster_path={item.poster_path} />
   const FavMovie = ({ title, poster_path }: any) => (
@@ -27,7 +27,12 @@ export default function FavouriteBox() {
   return (
     <View style={styles.container}>
       <Text style={styles.title}>Preferiti</Text>
-      <FlatList data={favMovieArray} keyExtractor={(item) => item.id} renderItem={renderItemFav}></FlatList>
+      <FlatList
+        data={favMovieArray}
+        keyExtractor={(item) => item.id}
+        renderItem={renderItemFav}
+        extraData={refreshFlatlist}
+      ></FlatList>
       <MaterialIcons name="keyboard-arrow-left" style={styles.chevron} onPress={() => navigation.goBack()} />
     </View>
   )

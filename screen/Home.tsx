@@ -23,6 +23,7 @@ export default function Home() {
   const [isLoadingTvShows, setIsLoadingTvShows] = useState(true)
   const [isLoadingWatched, setisLoadingWatched] = useState(true)
   const [favorites, setFavorites] = useState<Movie[]>([])
+  const [refreshFlatlist, setRefreshFlatList] = useState(false)
 
   useEffect(() => {
     getMovies()
@@ -70,8 +71,9 @@ export default function Home() {
   }
   const removeMovie = async (index: number) => {
     try {
+      setRefreshFlatList(!refreshFlatlist)
       AsyncStorage.removeItem('id')
-      setFavorites(favorites.splice(index, -1))
+      setFavorites([...favorites.splice(index, -1)])
       // console.log(favorites)
     } catch (e) {
       // remove error
