@@ -1,6 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useState, useEffect } from 'react'
-import { Text, View, StyleSheet, ScrollView, FlatList, ActivityIndicator, Pressable } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, FlatList, ActivityIndicator, Pressable, TextInput } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import Header from '../components/Header'
 import { Watched, Movie, Tv } from '../types'
@@ -24,6 +24,7 @@ export default function Home() {
   const [isLoadingWatched, setisLoadingWatched] = useState(true)
   const [favorites, setFavorites] = useState<Movie[]>([])
   const [refreshFlatlist, setRefreshFlatList] = useState(false)
+  const [text, onChangeText] = React.useState('')
 
   useEffect(() => {
     getMovies()
@@ -102,15 +103,9 @@ export default function Home() {
           Net
           <Text style={{ color: '#E11A38' }}>flix</Text>
         </Text>
-        <Ionicons
-          name="md-search"
-          size={24}
-          style={{
-            color: 'white',
-            textAlignVertical: 'center',
-            marginRight: 10,
-          }}
-        />
+        <TextInput style={styles.input} onChangeText={onChangeText} value={text} />
+
+        <Ionicons name="md-search" size={24} style={styles.lens} />
       </View>
       <View>
         <Pressable
@@ -172,6 +167,24 @@ const styles = StyleSheet.create({
     fontSize: 24,
     position: 'absolute',
     left: 180,
+    top: 10,
+  },
+  input: {
+    height: 40,
+    margin: 12,
+    borderWidth: 1,
+    padding: 10,
+    borderColor: 'white',
+    color: 'white',
+    width: 200,
+    position: 'relative',
+    bottom: 10,
+  },
+  lens: {
+    color: 'white',
+    textAlignVertical: 'center',
+    marginRight: 10,
+    position: 'relative',
     top: 10,
   },
 })
