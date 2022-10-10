@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, ScrollView, FlatList, ActivityIndicator, Pressable, TextInput } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import Header from '../components/Header'
-import { Watched, Movie, Tv } from '../types'
+import { Watched, Movie, Tv, Searched } from '../types'
 import MovieBox from '../components/MovieBox'
 import { TvBox } from '../components/TvBox'
 import { MovieResource, TvResources, WatchedResources } from '../api'
@@ -12,6 +12,8 @@ import AsyncStorage from '@react-native-async-storage/async-storage'
 import WatchedBox from '../components/WatchedBox'
 import { AntDesign } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
+import SearchedMoviesBox from '../components/SearchedMoviesBox'
+import { apiKey } from '../utils/config'
 
 export default function Home() {
   const navigation = useNavigation()
@@ -24,14 +26,17 @@ export default function Home() {
   const [isLoadingWatched, setisLoadingWatched] = useState(true)
   const [favorites, setFavorites] = useState<Movie[]>([])
   const [refreshFlatlist, setRefreshFlatList] = useState(false)
-  const [text, onChangeText] = React.useState('')
+  const [searchValue, setSearchValue] = useState('')
+  const [isLoadingSearchedMovies, setIsLoadingSearchedMovies] = useState(true)
+  const [searchedMovies, setSearchedMovies] = useState<Watched[]>([])
 
   useEffect(() => {
     getMovies()
     getTvShows()
     getWatched()
     getMyObject()
-  }, [])
+    getMovieRequest(searchValue)
+  }, [searchValue])
 
   useEffect(() => {
     console.log(favorites)
@@ -83,11 +88,25 @@ export default function Home() {
     console.log('Done.')
   }
 
+  const getMovieRequest = async (searchValue: string) => {
+    const url = `http://api.themoviedb.org/3/search/movie?query=${searchValue}?&api_key=${apiKey}`
+
+    const response = await fetch(url)
+    const responseJson = await response.json()
+
+    if (responseJson) {
+      setSearchedMovies(responseJson.results)
+    }
+    // console.log(responseJson.results)
+  }
+
   const renderItem = ({ item }: { item: Movie }) => <MovieBox movie={item} handleFavouritesClick={addToFavorites} />
 
   const renderItemTV = ({ item }: { item: Tv }) => <TvBox Tv={item} />
 
   const renderItemContinue = ({ item }: { item: Watched }) => <WatchedBox movieContinue={item} />
+
+  const renderItemSearchedMovies = ({ item }: { item: Searched }) => <SearchedMoviesBox searchedMovies={item} />
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
@@ -103,12 +122,11 @@ export default function Home() {
           Net
           <Text style={{ color: '#E11A38' }}>flix</Text>
         </Text>
+
         <TextInput
           style={styles.input}
-          onChangeText={onChangeText}
-          value={text}
-          autoCapitalize="none"
-          autoCorrect={false}
+          value={searchValue}
+          onChangeText={(searchValue) => setSearchValue(searchValue)}
         />
 
         <Ionicons name="md-search" size={24} style={styles.lens} />
@@ -120,6 +138,17 @@ export default function Home() {
           <Text style={styles.textWhite}>Vai ai tuoi preferiti</Text>
         </Pressable>
         <AntDesign name="hearto" style={styles.heart} />
+      </View>
+
+      <View>
+        <Text style={styles.textWhite}>Search Movie</Text>
+
+        <FlatList
+          data={searchedMovies}
+          keyExtractor={(item) => item.id}
+          renderItem={renderItemSearchedMovies}
+          horizontal
+        />
       </View>
 
       <View>

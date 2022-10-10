@@ -5,3 +5,6 @@ const apiKey = "6ab6d103cf2ba85d668cee4e2de24983";
   const apiPathSingle = `https://api.themoviedb.org/3/tv/${id}?api_key=${apiKey}`;
   const apiPathTv = `http://api.themoviedb.org/3/discover/tv?api_key=${apiKey}&sort_by=popularity.desc&with_genres=18`;
   const apiContinue = `https://api.themoviedb.org/3/search/movie?api_key=${apiKey}&language=pt-BR&query=Kagemusha,+a+Sombra+do+Samurai`;
+  // const path = `http://api.themoviedb.org/3/search/movie?query=${searchValue}${apiKey}`
+
+  
