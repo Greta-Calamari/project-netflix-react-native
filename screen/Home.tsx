@@ -35,7 +35,7 @@ export default function Home() {
     getMovies()
     getTvShows()
     getWatched()
-    getMyObject()
+    getMyMovie()
     getSearchedMovieRequest(searchValue)
   }, [searchValue])
 
@@ -64,7 +64,7 @@ export default function Home() {
     setisLoadingWatched(false)
   }
 
-  const getMyObject = async () => {
+  const getMyMovie = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem('id')
       return jsonValue != null ? JSON.parse(jsonValue) : null
@@ -91,13 +91,14 @@ export default function Home() {
 
   const getSearchedMovieRequest = async (searchValue: string) => {
     const url = `http://api.themoviedb.org/3/search/movie?query=${searchValue}?&api_key=${apiKey}`
-
+    setIsLoadingSearchedMovies(true)
     const response = await fetch(url)
     const responseJson = await response.json()
-
     if (responseJson) {
       setSearchedMovies(responseJson.results)
     }
+    setIsLoadingSearchedMovies(false)
+
     // console.log(responseJson.results)
   }
 
@@ -152,13 +153,15 @@ export default function Home() {
 
       <View>
         <Text style={styles.textWhite}>Search Movie</Text>
-
-        <FlatList
-          data={searchedMovies}
-          keyExtractor={(item) => item.id}
-          renderItem={renderItemSearchedMovies}
-          horizontal
-        />
+        {isLoadingSearchedMovies && <LoaderBox />}
+        {!isLoadingSearchedMovies && (
+          <FlatList
+            data={searchedMovies}
+            keyExtractor={(item) => item.id}
+            renderItem={renderItemSearchedMovies}
+            horizontal
+          />
+        )}
       </View>
 
       <View>
