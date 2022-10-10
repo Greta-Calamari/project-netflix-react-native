@@ -103,7 +103,13 @@ export default function Home() {
           Net
           <Text style={{ color: '#E11A38' }}>flix</Text>
         </Text>
-        <TextInput style={styles.input} onChangeText={onChangeText} value={text} />
+        <TextInput
+          style={styles.input}
+          onChangeText={onChangeText}
+          value={text}
+          autoCapitalize="none"
+          autoCorrect={false}
+        />
 
         <Ionicons name="md-search" size={24} style={styles.lens} />
       </View>
