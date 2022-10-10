@@ -106,7 +106,9 @@ export default function Home() {
 
   const renderItemContinue = ({ item }: { item: Watched }) => <WatchedBox movieContinue={item} />
 
-  const renderItemSearchedMovies = ({ item }: { item: Searched }) => <SearchedMoviesBox searchedMovies={item} />
+  const renderItemSearchedMovies = ({ item }: { item: Searched }) => (
+    <SearchedMoviesBox searchedMovies={item} handleFavouritesClick={addToFavorites} />
+  )
 
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>

@@ -6,8 +6,9 @@ import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 interface Props {
   searchedMovies: Searched
+  handleFavouritesClick: any
 }
-export default function SearchedMociesBox({ searchedMovies }: Props) {
+export default function SearchedMociesBox({ searchedMovies, handleFavouritesClick }: Props) {
   const { title, poster_path, release_date, id, overview, vote_average, runtime, generes } = searchedMovies
   const navigation = useNavigation()
 
@@ -37,7 +38,7 @@ export default function SearchedMociesBox({ searchedMovies }: Props) {
       <View style={styles.wrap}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.date}>{release_date}</Text>
-        <Pressable style={styles.add} onPress={() => handleFavouritesClick(movie)}>
+        <Pressable style={styles.add} onPress={() => handleFavouritesClick(searchedMovies)}>
           <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.book} />
         </Pressable>
       </View>
