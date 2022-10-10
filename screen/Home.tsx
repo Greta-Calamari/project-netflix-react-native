@@ -14,6 +14,7 @@ import { AntDesign } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import SearchedMoviesBox from '../components/SearchedMoviesBox'
 import { apiKey } from '../utils/config'
+import SearchedResources from '../api/resources/Searched'
 
 export default function Home() {
   const navigation = useNavigation()
@@ -28,14 +29,14 @@ export default function Home() {
   const [refreshFlatlist, setRefreshFlatList] = useState(false)
   const [searchValue, setSearchValue] = useState('')
   const [isLoadingSearchedMovies, setIsLoadingSearchedMovies] = useState(true)
-  const [searchedMovies, setSearchedMovies] = useState<Watched[]>([])
+  const [searchedMovies, setSearchedMovies] = useState<Searched[]>([])
 
   useEffect(() => {
     getMovies()
     getTvShows()
     getWatched()
     getMyObject()
-    getMovieRequest(searchValue)
+    getSearchedMovieRequest(searchValue)
   }, [searchValue])
 
   useEffect(() => {
@@ -88,7 +89,7 @@ export default function Home() {
     console.log('Done.')
   }
 
-  const getMovieRequest = async (searchValue: string) => {
+  const getSearchedMovieRequest = async (searchValue: string) => {
     const url = `http://api.themoviedb.org/3/search/movie?query=${searchValue}?&api_key=${apiKey}`
 
     const response = await fetch(url)
@@ -99,6 +100,13 @@ export default function Home() {
     }
     // console.log(responseJson.results)
   }
+
+  // const getMovieRequest = async (searchValue: string) => {
+  //   setIsLoadingSearchedMovies(true)
+  //   const searched = await SearchedResources.getSearched()
+  //   setSearchedMovies(searched)
+  //   setIsLoadingSearchedMovies(false)
+  // }
 
   const renderItem = ({ item }: { item: Movie }) => <MovieBox movie={item} handleFavouritesClick={addToFavorites} />
 
