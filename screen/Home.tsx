@@ -14,6 +14,7 @@ import { AntDesign } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import SearchedMoviesBox from '../components/SearchedMoviesBox'
 import { apiKey } from '../utils/config'
+import SearchedResources from '../api/resources/Searched'
 
 export default function Home() {
   const navigation = useNavigation()
@@ -79,25 +80,23 @@ export default function Home() {
     setFavorites([...favorites.splice(index, -1)])
   }
 
-  const getSearchedMovieRequest = async (searchValue: string) => {
-    const url = `http://api.themoviedb.org/3/search/movie?query=${searchValue}?&api_key=${apiKey}`
-    setIsLoadingSearchedMovies(true)
-    const response = await fetch(url)
-    const responseJson = await response.json()
-    if (responseJson) {
-      setSearchedMovies(responseJson.results)
-    }
-    setIsLoadingSearchedMovies(false)
-
-    // console.log(responseJson.results)
-  }
-
-  // const getMovieRequest = async (searchValue: string) => {
+  // const getSearchedMovieRequest = async (searchValue: string) => {
+  //   const url = `http://api.themoviedb.org/3/search/movie?query=${searchValue}?&api_key=${apiKey}`
   //   setIsLoadingSearchedMovies(true)
-  //   const searched = await SearchedResources.getSearched()
-  //   setSearchedMovies(searched)
+  //   const response = await fetch(url)
+  //   const responseJson = await response.json()
+  //   if (responseJson) {
+  //     setSearchedMovies(responseJson.results)
+  //   }
   //   setIsLoadingSearchedMovies(false)
+
   // }
+  const getSearchedMovieRequest = async (searchValue: string) => {
+    setIsLoadingSearchedMovies(true)
+    const searched = await SearchedResources.getSearched(searchValue)
+    setSearchedMovies(searched)
+    setIsLoadingSearchedMovies(false)
+  }
 
   const renderItem = ({ item }: { item: Movie }) => <MovieBox movie={item} handleFavouritesClick={addToFavorites} />
 
