@@ -68,8 +68,12 @@ export default function Home() {
     return JSON.parse(jsonValue)
   }
   const addToFavorites = async (item: Movie) => {
-    StorageResources.storageSave('name', [...favorites, item])
-    setFavorites([...favorites, item])
+    if (favorites.includes(item)) {
+      return
+    } else {
+      StorageResources.storageSave('name', [...favorites, item])
+      setFavorites([...favorites, item])
+    }
   }
 
   const removeMovie = async (index: number) => {
@@ -87,9 +91,11 @@ export default function Home() {
 
   const renderItem = ({ item }: { item: Movie }) => <MovieBox movie={item} handleFavouritesClick={addToFavorites} />
 
-  const renderItemTV = ({ item }: { item: Tv }) => <TvBox Tv={item} />
+  const renderItemTV = ({ item }: { item: Tv }) => <TvBox Tv={item} handleFavouritesClick={addToFavorites} />
 
-  const renderItemContinue = ({ item }: { item: Watched }) => <WatchedBox movieContinue={item} />
+  const renderItemContinue = ({ item }: { item: Watched }) => (
+    <WatchedBox movieWatched={item} handleFavouritesClick={addToFavorites} />
+  )
 
   const renderItemSearchedMovies = ({ item }: { item: Searched }) => (
     <SearchedMoviesBox searchedMovies={item} handleFavouritesClick={addToFavorites} />

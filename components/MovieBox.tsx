@@ -1,5 +1,5 @@
 import { Text, Image, StyleSheet, View, TouchableHighlight, Pressable } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { Movie } from '../types'
 import { useNavigation } from '@react-navigation/native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
@@ -12,7 +12,6 @@ interface Props {
 export default function MovieBox({ movie, handleFavouritesClick }: Props) {
   const { title, poster_path, release_date, id, overview, vote_average, runtime, generes } = movie
   const navigation = useNavigation()
-
   return (
     <View>
       <TouchableHighlight
@@ -65,8 +64,8 @@ const styles = StyleSheet.create({
     width: 100,
   },
   book: {
-    color: 'white',
     fontSize: 30,
+    color: 'white',
   },
   add: {
     position: 'absolute',

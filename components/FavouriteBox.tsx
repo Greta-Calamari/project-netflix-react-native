@@ -6,13 +6,21 @@ import { FavouriteStackParams, NavigationProps } from '../types'
 import { FlatList } from 'react-native-gesture-handler'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
-export default function FavouriteBox() {
+interface Props {
+  setNewColor: any
+}
+export default function FavouriteBox({ setNewColor }: Props) {
   const route = useRoute()
   const navigation = useNavigation<NavigationProps>()
   const { favMovieArray, handleRemove, refreshFlatlist } = route.params as FavouriteStackParams
 
-  const renderItemFav = ({ item }: any) => <FavMovie title={item.title} poster_path={item.poster_path} />
-  const FavMovie = ({ title, poster_path }: any) => (
+  const combined = () => {
+    handleRemove()
+  }
+  const renderItemFav = ({ item }: any) => (
+    <FavMovie name={item.name} title={item.title} poster_path={item.poster_path} />
+  )
+  const FavMovie = ({ title, poster_path, name }: any) => (
     <View style={styles.wrap}>
       <Image
         style={styles.image}
@@ -20,8 +28,9 @@ export default function FavouriteBox() {
           uri: `https://image.tmdb.org/t/p/w500/${poster_path}`,
         }}
       />
-      <Text style={styles.fav}>{title}</Text>
-      <MaterialCommunityIcons onPress={() => handleRemove()} name="bookmark-minus-outline" style={styles.book} />
+      {title && <Text style={styles.fav}>{title}</Text>}
+      {!title && <Text style={styles.fav}>{name}</Text>}
+      <MaterialCommunityIcons onPress={() => combined()} name="bookmark-minus-outline" style={styles.book} />
     </View>
   )
   return (
@@ -46,6 +55,7 @@ const styles = StyleSheet.create({
     color: 'white',
     marginLeft: 15,
     marginTop: 10,
+    width: 150,
   },
   chevron: {
     position: 'absolute',

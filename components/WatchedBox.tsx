@@ -1,27 +1,19 @@
-import { Text, Image, StyleSheet, View, TouchableHighlight } from "react-native";
-import React from "react";
-import { Watched } from "../types";
-import { AntDesign } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { Text, Image, StyleSheet, View, TouchableHighlight, Pressable } from 'react-native'
+import React from 'react'
+import { Watched } from '../types'
+import { AntDesign } from '@expo/vector-icons'
+import { useNavigation } from '@react-navigation/native'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 interface Props {
-  movieContinue: Watched;
+  movieWatched: Watched
+  handleFavouritesClick: any
 }
 
-export default function ContinueBox({ movieContinue }: Props) {
-  const { 
-    name,
-    title,
-    poster_path,
-    release_date,
-    first_air_date,
-    overview,
-    runtime,
-    id,
-    vote_average,
-    generes,} = movieContinue;
-  const navigation = useNavigation();
-
+export default function ContinueBox({ movieWatched, handleFavouritesClick }: Props) {
+  const { name, title, poster_path, release_date, first_air_date, overview, runtime, id, vote_average, generes } =
+    movieWatched
+  const navigation = useNavigation()
 
   return (
     <View>
@@ -29,35 +21,37 @@ export default function ContinueBox({ movieContinue }: Props) {
         <AntDesign name="playcircleo" style={styles.play} />
         <View></View>
         <TouchableHighlight
-        onPress={() =>
-          navigation.navigate("SingleWatched", {
-            id,
-            poster_path,
-            name,
-            first_air_date,
-            overview,
-            vote_average,
-            runtime,
-            generes,
-          })
-        }
-      >
-        <Image
-          style={styles.image}
-          source={{
-            uri: `https://image.tmdb.org/t/p/w500/${poster_path}`,
-          }}
-        />
+          onPress={() =>
+            navigation.navigate('SingleWatched', {
+              id,
+              poster_path,
+              name,
+              first_air_date,
+              overview,
+              vote_average,
+              runtime,
+              generes,
+            })
+          }
+        >
+          <Image
+            style={styles.image}
+            source={{
+              uri: `https://image.tmdb.org/t/p/w500/${poster_path}`,
+            }}
+          />
         </TouchableHighlight>
       </View>
       <View style={styles.wrap}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.date}>{release_date}</Text>
+        <Pressable style={styles.add} onPress={() => handleFavouritesClick(movieWatched)}>
+          <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.book} />
+        </Pressable>
       </View>
     </View>
-  );
+  )
 }
-
 
 const styles = StyleSheet.create({
   image: {
@@ -68,40 +62,33 @@ const styles = StyleSheet.create({
     opacity: 0.4,
   },
   title: {
-    color: "white",
+    color: 'white',
   },
   date: {
-    color: "grey",
+    color: 'grey',
   },
   wrap: {
     marginLeft: 20,
-    width:100,
-
+    width: 100,
   },
   overlay: {
-    position: "relative",
+    position: 'relative',
   },
 
   play: {
-    color: "white",
+    color: 'white',
     fontSize: 50,
-    position: "absolute",
+    position: 'absolute',
     right: 60,
     top: 59,
   },
-  // elisse: {
-  //   position: "absolute",
-  //   right: 60,
-  //   top: 60,
-  //   width: 50,
-  //   height: 30,
-  //   borderTopLeftRadius: 50 / 2,
-  //   borderTopRightRadius: 50 / 2,
-  //   borderTopColor: "#F02B2B",
-  //   borderBottomWidth: 0,
-  //   borderTopLeftColor: "transparent",
-  //   borderRightColor: "transparent",
-  //   borderLeftColor: "transparent",
-  //   borderWidth: 5,
-  // },
-});
+  add: {
+    position: 'absolute',
+    left: 100,
+    bottom: 10,
+  },
+  book: {
+    fontSize: 30,
+    color: 'white',
+  },
+})
