@@ -8,12 +8,10 @@ import MovieBox from '../components/MovieBox'
 import { TvBox } from '../components/TvBox'
 import { MovieResource, StorageResources, TvResources, WatchedResources } from '../api'
 import LoaderBox from '../components/LoaderBox'
-import AsyncStorage from '@react-native-async-storage/async-storage'
 import WatchedBox from '../components/WatchedBox'
 import { AntDesign } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import SearchedMoviesBox from '../components/SearchedMoviesBox'
-import { apiKey } from '../utils/config'
 import SearchedResources from '../api/resources/Searched'
 
 export default function Home() {
@@ -80,17 +78,6 @@ export default function Home() {
     setFavorites([...favorites.splice(index, -1)])
   }
 
-  // const getSearchedMovieRequest = async (searchValue: string) => {
-  //   const url = `http://api.themoviedb.org/3/search/movie?query=${searchValue}?&api_key=${apiKey}`
-  //   setIsLoadingSearchedMovies(true)
-  //   const response = await fetch(url)
-  //   const responseJson = await response.json()
-  //   if (responseJson) {
-  //     setSearchedMovies(responseJson.results)
-  //   }
-  //   setIsLoadingSearchedMovies(false)
-
-  // }
   const getSearchedMovieRequest = async (searchValue: string) => {
     setIsLoadingSearchedMovies(true)
     const searched = await SearchedResources.getSearched(searchValue)
