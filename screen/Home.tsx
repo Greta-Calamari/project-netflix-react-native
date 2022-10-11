@@ -1,12 +1,12 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useState, useEffect } from 'react'
-import { Text, View, StyleSheet, ScrollView, FlatList, ActivityIndicator, Pressable, TextInput } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, FlatList, Pressable, TextInput } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import Header from '../components/Header'
 import { Watched, Movie, Tv, Searched } from '../types'
 import MovieBox from '../components/MovieBox'
 import { TvBox } from '../components/TvBox'
-import { MovieResource, TvResources, WatchedResources } from '../api'
+import { MovieResource, StorageResources, TvResources, WatchedResources } from '../api'
 import LoaderBox from '../components/LoaderBox'
 import AsyncStorage from '@react-native-async-storage/async-storage'
 import WatchedBox from '../components/WatchedBox'
@@ -14,7 +14,6 @@ import { AntDesign } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import SearchedMoviesBox from '../components/SearchedMoviesBox'
 import { apiKey } from '../utils/config'
-import SearchedResources from '../api/resources/Searched'
 
 export default function Home() {
   const navigation = useNavigation()
@@ -65,28 +64,19 @@ export default function Home() {
   }
 
   const getMyMovie = async () => {
-    try {
-      const jsonValue = await AsyncStorage.getItem('id')
-      return jsonValue != null ? JSON.parse(jsonValue) : null
-    } catch (e) {}
-
-    console.log('Done.')
+    const jsonValue = await StorageResources.storageGet('name')
+    if (!jsonValue) return undefined
+    return JSON.parse(jsonValue)
   }
   const addToFavorites = async (item: Movie) => {
-    AsyncStorage.setItem('id', JSON.stringify([...favorites, item]))
+    StorageResources.storageSave('name', [...favorites, item])
     setFavorites([...favorites, item])
   }
-  const removeMovie = async (index: number) => {
-    try {
-      setRefreshFlatList(!refreshFlatlist)
-      AsyncStorage.removeItem('id')
-      setFavorites([...favorites.splice(index, -1)])
-      // console.log(favorites)
-    } catch (e) {
-      // remove error
-    }
 
-    console.log('Done.')
+  const removeMovie = async (index: number) => {
+    setRefreshFlatList(!refreshFlatlist)
+    StorageResources.storageRemove('name')
+    setFavorites([...favorites.splice(index, -1)])
   }
 
   const getSearchedMovieRequest = async (searchValue: string) => {
