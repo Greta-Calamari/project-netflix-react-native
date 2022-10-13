@@ -124,14 +124,14 @@ export default function Home() {
 
         <Ionicons name="md-search" size={24} style={styles.lens} />
       </View>
-      <View>
+      {/* <View>
         <Pressable
           onPress={() => navigation.navigate('FavouriteBox', { favMovieArray: favorites, handleRemove: removeMovie })}
         >
           <Text style={styles.textWhite}>Vai ai tuoi preferiti</Text>
         </Pressable>
         <AntDesign name="hearto" style={styles.heart} />
-      </View>
+      </View> */}
 
       <View>
         <Text style={styles.textWhite}>Search Movie</Text>

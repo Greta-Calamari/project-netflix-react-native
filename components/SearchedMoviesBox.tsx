@@ -8,7 +8,7 @@ interface Props {
   searchedMovies: Searched
   handleFavouritesClick: any
 }
-export default function SearchedMociesBox({ searchedMovies, handleFavouritesClick }: Props) {
+export default function SearchedMoviesBox({ searchedMovies, handleFavouritesClick }: Props) {
   const { title, poster_path, release_date, id, overview, vote_average, runtime, generes } = searchedMovies
   const navigation = useNavigation()
 

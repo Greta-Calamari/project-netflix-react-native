@@ -6,9 +6,6 @@ import { FavouriteStackParams, NavigationProps } from '../types'
 import { FlatList } from 'react-native-gesture-handler'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
-interface Props {
-  setNewColor: any
-}
 export default function FavouriteBox({ setNewColor }: Props) {
   const route = useRoute()
   const navigation = useNavigation<NavigationProps>()

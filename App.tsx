@@ -1,6 +1,7 @@
 import { StatusBar } from 'expo-status-bar'
-import Navigation from './navigation/index'
-import Reactotron from 'reactotron-react-native'
+import React from 'react'
+import Navigation from './navigation'
+
 if (__DEV__) {
   import('./ReactotronConfig').then(() => console.log('Reactotron Configured'))
 }
