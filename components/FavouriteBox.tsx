@@ -1,23 +1,42 @@
-import { useNavigation, useRoute } from '@react-navigation/native'
-import React, { useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { View, StyleSheet, Text, Image } from 'react-native'
-import { MaterialIcons } from '@expo/vector-icons'
-import { FavouriteStackParams, NavigationProps } from '../types'
+import { FavouriteStackParams, Movie, NavigationProps } from '../types'
 import { FlatList } from 'react-native-gesture-handler'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { StorageResources } from '../api'
+import LoaderBox from './LoaderBox'
+import navigation from '../navigation'
+import { useFocusEffect } from '@react-navigation/native'
 
-export default function FavouriteBox({ setNewColor }: Props) {
-  const route = useRoute()
-  const navigation = useNavigation<NavigationProps>()
-  const { favMovieArray, handleRemove, refreshFlatlist } = route.params as FavouriteStackParams
+export default function FavouriteBox() {
+  const [favoritesFilm, setFavorite] = useState<Movie[]>([])
+  const [isLoadingFav, setIsLoadingFav] = useState(true)
 
-  const combined = () => {
-    handleRemove()
-  }
-  const renderItemFav = ({ item }: any) => (
-    <FavMovie name={item.name} title={item.title} poster_path={item.poster_path} />
+  useFocusEffect(
+    React.useCallback(() => {
+      setIsLoadingFav(true)
+      getFav()
+      return () => {
+        // Do something when the screen is unfocused
+        // Useful for cleanup functions
+      }
+    }, [navigation])
   )
-  const FavMovie = ({ title, poster_path, name }: any) => (
+
+  async function removeMovie() {
+    StorageResources.storageRemove('favmovies')
+  }
+
+  async function getFav() {
+    const favorites = await StorageResources.storageGet('favmovies')
+    setFavorite(favorites)
+    setIsLoadingFav(false)
+  }
+
+  const renderItemFav = ({ item }: any) => (
+    <FavMovie name={item.name} title={item.title} poster_path={item.poster_path} id={item.id} />
+  )
+  const FavMovie = ({ title, poster_path, name, id }: any) => (
     <View style={styles.wrap}>
       <Image
         style={styles.image}
@@ -27,26 +46,35 @@ export default function FavouriteBox({ setNewColor }: Props) {
       />
       {title && <Text style={styles.fav}>{title}</Text>}
       {!title && <Text style={styles.fav}>{name}</Text>}
-      <MaterialCommunityIcons onPress={() => combined()} name="bookmark-minus-outline" style={styles.book} />
+      <MaterialCommunityIcons onPress={() => removeMovie()} name="bookmark-minus-outline" style={styles.book} />
     </View>
   )
   return (
-    <View style={styles.container}>
+    <View style={styles.container1}>
       <Text style={styles.title}>Preferiti</Text>
-      <FlatList
-        data={favMovieArray}
-        keyExtractor={(item) => item.id}
-        renderItem={renderItemFav}
-        extraData={refreshFlatlist}
-      ></FlatList>
-      <MaterialIcons name="keyboard-arrow-left" style={styles.chevron} onPress={() => navigation.goBack()} />
+
+      <View style={styles.container}>
+        {isLoadingFav && <LoaderBox />}
+        {!isLoadingFav && (
+          <FlatList
+            data={favoritesFilm}
+            keyExtractor={(item) => item.id}
+            renderItem={renderItemFav}
+            horizontal
+          ></FlatList>
+        )}
+      </View>
     </View>
   )
 }
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
+  container1: {
     backgroundColor: 'black',
+    flex: 1,
+  },
+  container: {
+    marginTop: 100,
+    flex: 1,
   },
   fav: {
     color: 'white',

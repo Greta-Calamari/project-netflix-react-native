@@ -1,5 +1,5 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { NavigationContainer } from '@react-navigation/native'
+import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Ionicons from '@expo/vector-icons/Ionicons'
@@ -15,6 +15,7 @@ import SingleMovie from '../screen/SingleMovie'
 import SingleTv from '../screen/SingleTv'
 import SingleWatched from '../screen/SingleWatched'
 import FavouriteBox from '../components/FavouriteBox'
+
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
 
@@ -42,7 +43,6 @@ function Stacked() {
       <Stack.Screen name="SingleMovie" component={SingleMovie} options={{ title: 'SingleMovie' }} />
       <Stack.Screen name="SingleTv" component={SingleTv} options={{ title: 'SingleTv' }} />
       <Stack.Screen name="SingleWatched" component={SingleWatched} options={{ title: 'SingleWatched' }} />
-      {/* <Stack.Screen name="FavouriteBox" component={FavouriteBox} options={{ title: 'FavouriteBox' }} /> */}
     </Stack.Navigator>
   )
 }
@@ -80,8 +80,9 @@ function BottomTabNav() {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
-      <Tab.Screen name="Favourites" component={FavouriteBox} />
-      {/* <Tab.Screen name="Search" component={SearchedMoviesBox} /> */}
+
+      <Tab.Screen name="Favourites" component={FavouriteBox} options={{ title: 'FavouriteBox' }} />
+      <Tab.Screen name="Search" component={SearchedMoviesBox} />
     </Tab.Navigator>
   )
 }

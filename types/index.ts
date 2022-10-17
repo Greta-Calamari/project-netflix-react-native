@@ -74,13 +74,18 @@ export interface FavouriteStackParams {
   handleRemove: any
   refreshFlatlist?: any
 }
+export interface HomeStackParams {
+  favMovieArray: any
+  handleRemove: any
+  refreshFlatlist?: any
+}
 export type StackParamsList = {
-  Home: undefined
+  Home: HomeStackParams | undefined
   SingleMovie: SingleMovieRouteProps | undefined
   SingleTv: SingleMovieRouteProps | undefined
   Play: undefined
   Saved: undefined
-  FavouriteBox: FavouriteStackParams
+  FavouriteBox: FavouriteStackParams | undefined
 }
 
 export type NavigationProps = StackNavigationProp<StackParamsList>

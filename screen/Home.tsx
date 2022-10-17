@@ -1,22 +1,20 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useState, useEffect } from 'react'
-import { Text, View, StyleSheet, ScrollView, FlatList, Pressable, TextInput } from 'react-native'
+import { Text, View, StyleSheet, ScrollView, FlatList, TextInput } from 'react-native'
 import { Ionicons } from '@expo/vector-icons'
 import Header from '../components/Header'
-import { Watched, Movie, Tv, Searched } from '../types'
+import { Watched, Movie, Tv, Searched, HomeStackParams } from '../types'
 import MovieBox from '../components/MovieBox'
 import { TvBox } from '../components/TvBox'
 import { MovieResource, StorageResources, TvResources, WatchedResources } from '../api'
 import LoaderBox from '../components/LoaderBox'
 import WatchedBox from '../components/WatchedBox'
-import { AntDesign } from '@expo/vector-icons'
 import { useNavigation } from '@react-navigation/native'
 import SearchedMoviesBox from '../components/SearchedMoviesBox'
 import SearchedResources from '../api/resources/Searched'
 
 export default function Home() {
   const navigation = useNavigation()
-
   const [movies, setMovies] = useState<Movie[]>([])
   const [tvShows, setTvShows] = useState<Tv[]>([])
   const [continues, setContinue] = useState<Watched[]>([])
@@ -33,13 +31,15 @@ export default function Home() {
     getMovies()
     getTvShows()
     getWatched()
-    getMyMovie()
-    getSearchedMovieRequest(searchValue)
-  }, [searchValue])
+  }, [])
+
+  // useEffect(() => {
+  //   console.log(favorites)
+  // }, [favorites])
 
   useEffect(() => {
-    console.log(favorites)
-  }, [favorites])
+    getSearchedMovieRequest(searchValue)
+  }, [searchValue])
 
   async function getMovies() {
     setIsLoadingMovies(true)
@@ -62,24 +62,10 @@ export default function Home() {
     setisLoadingWatched(false)
   }
 
-  const getMyMovie = async () => {
-    const jsonValue = await StorageResources.storageGet('name')
-    if (!jsonValue) return undefined
-    return JSON.parse(jsonValue)
-  }
   const addToFavorites = async (item: Movie) => {
-    if (favorites.includes(item)) {
-      return
-    } else {
-      StorageResources.storageSave('name', [...favorites, item])
-      setFavorites([...favorites, item])
-    }
-  }
-
-  const removeMovie = async (index: number) => {
-    setRefreshFlatList(!refreshFlatlist)
-    StorageResources.storageRemove('name')
-    setFavorites([...favorites.splice(index, -1)])
+    if (favorites.includes(item)) return null
+    StorageResources.storageSave('favmovies', [...favorites, item])
+    setFavorites([...favorites, item])
   }
 
   const getSearchedMovieRequest = async (searchValue: string) => {
@@ -124,6 +110,7 @@ export default function Home() {
 
         <Ionicons name="md-search" size={24} style={styles.lens} />
       </View>
+
       {/* <View>
         <Pressable
           onPress={() => navigation.navigate('FavouriteBox', { favMovieArray: favorites, handleRemove: removeMovie })}

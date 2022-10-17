@@ -9,3 +9,15 @@ const apiKey = "6ab6d103cf2ba85d668cee4e2de24983";
     const url = `http://api.themoviedb.org/3/search/movie?query=${searchValue}?&api_key=${apiKey}`
 
   
+  // const getMyMovie = async () => {
+  //   const jsonValue = await StorageResources.storageGet('favmovies')
+  //   if (!jsonValue) return undefined
+  //   return JSON.parse(jsonValue)
+  // }
+
+
+  // const removeMovie = async (index: number) => {
+  //   setRefreshFlatList(!refreshFlatlist)
+  //   StorageResources.storageRemove('name')
+  //   setFavorites([...favorites.splice(index, -1)])
+  // }

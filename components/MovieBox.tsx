@@ -1,5 +1,5 @@
 import { Text, Image, StyleSheet, View, TouchableHighlight, Pressable } from 'react-native'
-import React, { useState } from 'react'
+import React from 'react'
 import { Movie } from '../types'
 import { useNavigation } from '@react-navigation/native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
