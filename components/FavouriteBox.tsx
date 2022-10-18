@@ -11,12 +11,10 @@ import { useFocusEffect } from '@react-navigation/native'
 export default function FavouriteBox() {
   const [favoritesFilm, setFavorite] = useState<Movie[]>([])
   const [isLoadingFav, setIsLoadingFav] = useState(true)
-  const [titleText, setTitleText] = useState(false)
 
   useFocusEffect(
     React.useCallback(() => {
       setIsLoadingFav(true)
-
       getFav()
       return () => {}
     }, [navigation])
@@ -28,14 +26,13 @@ export default function FavouriteBox() {
       return e.id !== id
     })
     StorageResources.storageSave('favmovies', alteredValue)
-    setTitleText(true)
+    setFavorite(alteredValue)
   }
 
   async function getFav() {
     const favorites = await StorageResources.storageGet('favmovies')
     setFavorite(favorites)
     setIsLoadingFav(false)
-    setTitleText(false)
   }
 
   const renderItemFav = ({ item }: any) => (
@@ -43,8 +40,6 @@ export default function FavouriteBox() {
   )
   const FavMovie = ({ title, poster_path, name, id }: any) => (
     <View style={styles.wrap}>
-      {/* {titleText && <Text style={styles.text}>Removed from favorites</Text>}
-      {!titleText && ( */}
       <>
         <Image
           style={styles.image}
@@ -62,7 +57,6 @@ export default function FavouriteBox() {
           style={styles.book}
         />
       </>
-      {/* )} */}
     </View>
   )
   return (
@@ -76,7 +70,7 @@ export default function FavouriteBox() {
             data={favoritesFilm}
             keyExtractor={(item) => item.id}
             renderItem={renderItemFav}
-            horizontal
+            numColumns={2}
           ></FlatList>
         )}
       </View>
@@ -89,14 +83,14 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    marginTop: 100,
+    marginTop: 40,
     flex: 1,
   },
   fav: {
     color: 'white',
-    marginLeft: 15,
-    marginTop: 10,
+    textAlign: 'center',
     width: 150,
+    marginTop: 10,
   },
   chevron: {
     position: 'absolute',
@@ -112,8 +106,7 @@ const styles = StyleSheet.create({
   },
   wrap: {
     position: 'relative',
-    top: 150,
-    marginTop: 30,
+    top: 100,
     marginLeft: 30,
   },
   title: {
@@ -126,7 +119,7 @@ const styles = StyleSheet.create({
   book: {
     color: 'white',
     fontSize: 30,
-    marginLeft: 30,
+    textAlign: 'center',
   },
   text: {
     color: 'white',

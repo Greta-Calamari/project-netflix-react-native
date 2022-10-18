@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet, Image, TouchableHighlight, Pressable } from 'react-native'
-import React from 'react'
+import React, { useState } from 'react'
 import { Tv } from '../types'
-import { useNavigation } from '@react-navigation/native'
+import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 interface Props {
@@ -12,6 +12,14 @@ interface Props {
 export function TvBox({ Tv, handleFavouritesClick }: Props) {
   const { name, poster_path, first_air_date, overview, runtime, id, vote_average, generes } = Tv
   const navigation = useNavigation()
+  const [myColor, setmyColor] = useState('white')
+  useFocusEffect(
+    React.useCallback(() => {
+      return () => {
+        setmyColor('white')
+      }
+    }, [navigation])
+  )
 
   return (
     <View>
@@ -39,8 +47,13 @@ export function TvBox({ Tv, handleFavouritesClick }: Props) {
       <View style={styles.wrap}>
         <Text style={styles.name}>{name}</Text>
         <Text style={styles.date}>{first_air_date}</Text>
-        <Pressable style={styles.add} onPress={() => handleFavouritesClick(Tv)}>
-          <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.book} />
+        <Pressable
+          style={styles.add}
+          onPress={() => {
+            handleFavouritesClick(Tv), setmyColor('red')
+          }}
+        >
+          <MaterialCommunityIcons name="bookmark-plus-outline" color={myColor} style={styles.book} />
         </Pressable>
       </View>
     </View>
@@ -70,7 +83,6 @@ const styles = StyleSheet.create({
     bottom: 10,
   },
   book: {
-    color: 'white',
     fontSize: 30,
   },
 })

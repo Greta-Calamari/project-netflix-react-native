@@ -1,7 +1,6 @@
 import { StatusBar } from 'expo-status-bar'
 import React, { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, ScrollView, FlatList, TextInput } from 'react-native'
-import { Ionicons } from '@expo/vector-icons'
 import Header from '../components/Header'
 import { Watched, Movie, Tv, Searched, HomeStackParams } from '../types'
 import MovieBox from '../components/MovieBox'
@@ -10,8 +9,6 @@ import { MovieResource, StorageResources, TvResources, WatchedResources } from '
 import LoaderBox from '../components/LoaderBox'
 import WatchedBox from '../components/WatchedBox'
 import { useNavigation } from '@react-navigation/native'
-import SearchedMoviesBox from '../components/SearchedMoviesBox'
-import SearchedResources from '../api/resources/Searched'
 
 export default function Home() {
   const navigation = useNavigation()
@@ -22,24 +19,12 @@ export default function Home() {
   const [isLoadingTvShows, setIsLoadingTvShows] = useState(true)
   const [isLoadingWatched, setisLoadingWatched] = useState(true)
   const [favorites, setFavorites] = useState<Movie[]>([])
-  const [refreshFlatlist, setRefreshFlatList] = useState(false)
-  const [searchValue, setSearchValue] = useState('')
-  const [isLoadingSearchedMovies, setIsLoadingSearchedMovies] = useState(true)
-  const [searchedMovies, setSearchedMovies] = useState<Searched[]>([])
 
   useEffect(() => {
     getMovies()
     getTvShows()
     getWatched()
   }, [])
-
-  // useEffect(() => {
-  //   console.log(favorites)
-  // }, [favorites])
-
-  useEffect(() => {
-    getSearchedMovieRequest(searchValue)
-  }, [searchValue])
 
   async function getMovies() {
     setIsLoadingMovies(true)
@@ -68,23 +53,12 @@ export default function Home() {
     setFavorites([...favorites, item])
   }
 
-  const getSearchedMovieRequest = async (searchValue: string) => {
-    setIsLoadingSearchedMovies(true)
-    const searched = await SearchedResources.getSearched(searchValue)
-    setSearchedMovies(searched)
-    setIsLoadingSearchedMovies(false)
-  }
-
   const renderItem = ({ item }: { item: Movie }) => <MovieBox movie={item} handleFavouritesClick={addToFavorites} />
 
   const renderItemTV = ({ item }: { item: Tv }) => <TvBox Tv={item} handleFavouritesClick={addToFavorites} />
 
   const renderItemContinue = ({ item }: { item: Watched }) => (
     <WatchedBox movieWatched={item} handleFavouritesClick={addToFavorites} />
-  )
-
-  const renderItemSearchedMovies = ({ item }: { item: Searched }) => (
-    <SearchedMoviesBox searchedMovies={item} handleFavouritesClick={addToFavorites} />
   )
 
   return (
@@ -101,36 +75,6 @@ export default function Home() {
           Net
           <Text style={{ color: '#E11A38' }}>flix</Text>
         </Text>
-
-        <TextInput
-          style={styles.input}
-          value={searchValue}
-          onChangeText={(searchValue) => setSearchValue(searchValue)}
-        />
-
-        <Ionicons name="md-search" size={24} style={styles.lens} />
-      </View>
-
-      {/* <View>
-        <Pressable
-          onPress={() => navigation.navigate('FavouriteBox', { favMovieArray: favorites, handleRemove: removeMovie })}
-        >
-          <Text style={styles.textWhite}>Vai ai tuoi preferiti</Text>
-        </Pressable>
-        <AntDesign name="hearto" style={styles.heart} />
-      </View> */}
-
-      <View>
-        <Text style={styles.textWhite}>Search Movie</Text>
-        {isLoadingSearchedMovies && <LoaderBox />}
-        {!isLoadingSearchedMovies && (
-          <FlatList
-            data={searchedMovies}
-            keyExtractor={(item) => item.id}
-            renderItem={renderItemSearchedMovies}
-            horizontal
-          />
-        )}
       </View>
 
       <View>
@@ -178,30 +122,5 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 20,
     margin: 10,
-  },
-  heart: {
-    color: 'red',
-    fontSize: 24,
-    position: 'absolute',
-    left: 180,
-    top: 10,
-  },
-  input: {
-    height: 40,
-    margin: 12,
-    borderWidth: 1,
-    padding: 10,
-    borderColor: 'white',
-    color: 'white',
-    width: 200,
-    position: 'relative',
-    bottom: 10,
-  },
-  lens: {
-    color: 'white',
-    textAlignVertical: 'center',
-    marginRight: 10,
-    position: 'relative',
-    top: 10,
   },
 })

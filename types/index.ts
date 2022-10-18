@@ -85,7 +85,7 @@ export type StackParamsList = {
   SingleMovie: SingleMovieRouteProps | undefined
   SingleTv: SingleMovieRouteProps | undefined
   Play: undefined
-  Saved: undefined
+  Saved: undefined | SingleMovieRouteProps
   FavouriteBox: FavouriteStackParams | undefined
 }
 

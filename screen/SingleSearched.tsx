@@ -1,25 +1,16 @@
-import { Text, Image, StyleSheet, View, TouchableHighlight, Pressable } from 'react-native'
-import React, { useState } from 'react'
-import { Movie } from '../types'
-import { useFocusEffect, useNavigation } from '@react-navigation/native'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { View, Text, TouchableHighlight, Pressable, Image, StyleSheet } from 'react-native'
+import React from 'react'
+import { useNavigation, useRoute } from '@react-navigation/native'
+import { NavigationProps, Searched } from '../types'
 
 interface Props {
-  movie: Movie
+  searchedMovies: Searched
   handleFavouritesClick: any
 }
-
-export default function MovieBox({ movie, handleFavouritesClick }: Props) {
-  const { title, poster_path, release_date, id, overview, vote_average, runtime, generes } = movie
-  const navigation = useNavigation()
-  const [myColor, setmyColor] = useState('white')
-  useFocusEffect(
-    React.useCallback(() => {
-      return () => {
-        setmyColor('white')
-      }
-    }, [navigation])
-  )
+export default function SingleSearched({ searchedMovies }: Props) {
+  const route = useRoute()
+  const navigation = useNavigation<NavigationProps>()
+  const { id, title, release_date, poster_path, overview, vote_average, runtime, generes } = searchedMovies
   return (
     <View>
       <TouchableHighlight
@@ -46,19 +37,10 @@ export default function MovieBox({ movie, handleFavouritesClick }: Props) {
       <View style={styles.wrap}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.date}>{release_date}</Text>
-        <Pressable
-          style={styles.add}
-          onPress={() => {
-            handleFavouritesClick(movie), setmyColor('red')
-          }}
-        >
-          <MaterialCommunityIcons name="bookmark-plus-outline" color={myColor} style={styles.book} />
-        </Pressable>
       </View>
     </View>
   )
 }
-
 const styles = StyleSheet.create({
   image: {
     width: 150,
@@ -77,6 +59,7 @@ const styles = StyleSheet.create({
     width: 100,
   },
   book: {
+    color: 'white',
     fontSize: 30,
   },
   add: {

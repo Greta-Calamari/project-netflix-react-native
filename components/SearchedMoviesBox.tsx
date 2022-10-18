@@ -1,46 +1,52 @@
-import { View, Text, StyleSheet, TouchableHighlight, Image, Pressable } from 'react-native'
-import React from 'react'
+import { View, Text, StyleSheet, TextInput, FlatList, SafeAreaView } from 'react-native'
+import React, { useEffect, useState } from 'react'
 import { Searched } from '../types'
-import { useNavigation } from '@react-navigation/native'
-import { MaterialCommunityIcons } from '@expo/vector-icons'
+import SearchedResources from '../api/resources/Searched'
+import SingleSearched from '../screen/SingleSearched'
+import LoaderBox from './LoaderBox'
+import { Ionicons } from '@expo/vector-icons'
 
-interface Props {
-  searchedMovies: Searched
-  handleFavouritesClick: any
-}
-export default function SearchedMoviesBox({ searchedMovies, handleFavouritesClick }: Props) {
-  const { title, poster_path, release_date, id, overview, vote_average, runtime, generes } = searchedMovies
-  const navigation = useNavigation()
+export default function SearchedMoviesBox() {
+  const [searchedMovies, setSearchedMovies] = useState<Searched[]>([])
+  const [searchValue, setSearchValue] = useState('')
+  const [isLoadingSearchedMovies, setIsLoadingSearchedMovies] = useState(true)
 
+  useEffect(() => {
+    getSearchedMovieRequest(searchValue)
+  }, [searchValue])
+
+  const getSearchedMovieRequest = async (searchValue: string) => {
+    setIsLoadingSearchedMovies(true)
+    const searched = await SearchedResources.getSearched(searchValue)
+    setSearchedMovies(searched)
+    setIsLoadingSearchedMovies(false)
+  }
+
+  const renderItemSearchedMovies = ({ item }: { item: Searched }) => (
+    <SingleSearched searchedMovies={item} handleFavouritesClick={undefined} />
+  )
   return (
-    <View>
-      <TouchableHighlight
-        onPress={() =>
-          navigation.navigate('SingleMovie', {
-            title,
-            poster_path,
-            release_date,
-            id,
-            overview,
-            vote_average,
-            runtime,
-            generes,
-          })
-        }
-      >
-        <Image
-          style={styles.image}
-          source={{
-            uri: `https://image.tmdb.org/t/p/w500/${poster_path}`,
-          }}
+    <View style={styles.container}>
+      <SafeAreaView>
+        <TextInput
+          style={styles.input}
+          value={searchValue}
+          onChangeText={(searchValue) => setSearchValue(searchValue)}
         />
-      </TouchableHighlight>
-      <View style={styles.wrap}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.date}>{release_date}</Text>
-        <Pressable style={styles.add} onPress={() => handleFavouritesClick(searchedMovies)}>
-          <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.book} />
-        </Pressable>
+      </SafeAreaView>
+
+      <Text style={styles.textWhite}>Search Movie</Text>
+      {/* <Ionicons name="md-search" size={24} style={styles.lens} /> */}
+      <View style={styles.cont}>
+        {isLoadingSearchedMovies && <LoaderBox />}
+        {!isLoadingSearchedMovies && (
+          <FlatList
+            data={searchedMovies}
+            keyExtractor={(item) => item.id}
+            renderItem={renderItemSearchedMovies}
+            numColumns={2}
+          />
+        )}
       </View>
     </View>
   )
@@ -71,5 +77,39 @@ const styles = StyleSheet.create({
     position: 'absolute',
     left: 100,
     bottom: 10,
+  },
+  input: {
+    height: 40,
+    borderWidth: 1,
+    padding: 10,
+    borderColor: 'white',
+    color: 'white',
+    width: 200,
+    position: 'relative',
+    top: 45,
+    left: 180,
+  },
+  lens: {
+    color: 'white',
+    textAlignVertical: 'center',
+    marginRight: 10,
+    position: 'relative',
+    top: 10,
+    left: 136,
+  },
+  textWhite: {
+    color: 'white',
+    fontSize: 20,
+    position: 'relative',
+    top: 15,
+    left: 10,
+  },
+  container: {
+    flex: 1,
+    backgroundColor: 'black',
+  },
+  cont: {
+    marginTop: 50,
+    marginLeft: 20,
   },
 })
