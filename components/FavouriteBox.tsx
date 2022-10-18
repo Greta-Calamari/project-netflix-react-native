@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { View, StyleSheet, Text, Image } from 'react-native'
-import { FavouriteStackParams, Movie, NavigationProps } from '../types'
+import { Movie } from '../types'
 import { FlatList } from 'react-native-gesture-handler'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { StorageResources } from '../api'
@@ -11,15 +11,14 @@ import { useFocusEffect } from '@react-navigation/native'
 export default function FavouriteBox() {
   const [favoritesFilm, setFavorite] = useState<Movie[]>([])
   const [isLoadingFav, setIsLoadingFav] = useState(true)
+  const [titleText, setTitleText] = useState(false)
 
   useFocusEffect(
     React.useCallback(() => {
       setIsLoadingFav(true)
+
       getFav()
-      return () => {
-        // Do something when the screen is unfocused
-        // Useful for cleanup functions
-      }
+      return () => {}
     }, [navigation])
   )
 
@@ -29,12 +28,14 @@ export default function FavouriteBox() {
       return e.id !== id
     })
     StorageResources.storageSave('favmovies', alteredValue)
+    setTitleText(true)
   }
 
   async function getFav() {
     const favorites = await StorageResources.storageGet('favmovies')
     setFavorite(favorites)
     setIsLoadingFav(false)
+    setTitleText(false)
   }
 
   const renderItemFav = ({ item }: any) => (
@@ -42,15 +43,26 @@ export default function FavouriteBox() {
   )
   const FavMovie = ({ title, poster_path, name, id }: any) => (
     <View style={styles.wrap}>
-      <Image
-        style={styles.image}
-        source={{
-          uri: `https://image.tmdb.org/t/p/w500/${poster_path}`,
-        }}
-      />
-      {title && <Text style={styles.fav}>{title}</Text>}
-      {!title && <Text style={styles.fav}>{name}</Text>}
-      <MaterialCommunityIcons onPress={() => removeMovie(id)} name="bookmark-minus-outline" style={styles.book} />
+      {/* {titleText && <Text style={styles.text}>Removed from favorites</Text>}
+      {!titleText && ( */}
+      <>
+        <Image
+          style={styles.image}
+          source={{
+            uri: `https://image.tmdb.org/t/p/w500/${poster_path}`,
+          }}
+        />
+        <Text style={styles.fav}>{title}</Text>
+        <Text style={styles.fav}>{name}</Text>
+        <MaterialCommunityIcons
+          onPress={() => {
+            removeMovie(id)
+          }}
+          name="bookmark-minus-outline"
+          style={styles.book}
+        />
+      </>
+      {/* )} */}
     </View>
   )
   return (
@@ -115,5 +127,10 @@ const styles = StyleSheet.create({
     color: 'white',
     fontSize: 30,
     marginLeft: 30,
+  },
+  text: {
+    color: 'white',
+    fontSize: 20,
+    width: 100,
   },
 })
