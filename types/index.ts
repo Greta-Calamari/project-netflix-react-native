@@ -9,6 +9,7 @@ export interface Movie {
   vote_average: number
   runtime: number
   generes: string
+  name?: string
 }
 export interface Tv {
   id: string

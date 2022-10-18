@@ -35,7 +35,6 @@ function Stacked() {
       }}
     >
       <Stack.Screen name="BottomTab" component={BottomTabNav} options={{ title: 'BottomTab' }} />
-
       <Stack.Screen name="Home" component={Home} options={{ title: 'Home' }} />
       <Stack.Screen name="Play" component={Play} options={{ title: 'Player' }} />
       <Stack.Screen name="Saved" component={Saved} options={{ title: 'Saved' }} />
@@ -80,7 +79,6 @@ function BottomTabNav() {
       })}
     >
       <Tab.Screen name="Home" component={Home} />
-
       <Tab.Screen name="Favourites" component={FavouriteBox} options={{ title: 'FavouriteBox' }} />
       <Tab.Screen name="Search" component={SearchedMoviesBox} />
     </Tab.Navigator>

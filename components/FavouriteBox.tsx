@@ -23,8 +23,12 @@ export default function FavouriteBox() {
     }, [navigation])
   )
 
-  async function removeMovie() {
-    StorageResources.storageRemove('favmovies')
+  async function removeMovie(id: Movie) {
+    const value = await StorageResources.storageGet('favmovies')
+    const alteredValue = value.filter(function (e: { id: any }) {
+      return e.id !== id
+    })
+    StorageResources.storageSave('favmovies', alteredValue)
   }
 
   async function getFav() {
@@ -46,7 +50,7 @@ export default function FavouriteBox() {
       />
       {title && <Text style={styles.fav}>{title}</Text>}
       {!title && <Text style={styles.fav}>{name}</Text>}
-      <MaterialCommunityIcons onPress={() => removeMovie()} name="bookmark-minus-outline" style={styles.book} />
+      <MaterialCommunityIcons onPress={() => removeMovie(id)} name="bookmark-minus-outline" style={styles.book} />
     </View>
   )
   return (
