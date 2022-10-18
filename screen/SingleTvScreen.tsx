@@ -1,22 +1,21 @@
-import { View, Text, Image, StyleSheet, ScrollView, Pressable } from 'react-native'
+import { View, Text, Image, StyleSheet, Dimensions, ScrollView, Pressable, FlatList } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Actor, Genres, Movie, NavigationProps, SingleMovieRouteProps } from '../types'
+import { Actor, Genres, NavigationProps, SingleMovieRouteProps, Tv } from '../types'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { MaterialIcons } from '@expo/vector-icons'
 import { LinearGradient } from 'expo-linear-gradient'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { Rating } from 'react-native-ratings'
-import { FlatList } from 'react-native-gesture-handler'
-import { width } from '../utils/utils'
-import { MovieResource } from '../api'
+import { MovieResource, TvResources } from '../api'
 import ActorProfileBox from '../components/ActorProfileBox'
 
-export default function SingleMovie() {
-  const [actors, setActors] = useState<Actor[]>([])
-  const [movieDetailData, setMovieDetailData] = useState<Movie>()
-  const [movieGenres, setMovieGenre] = useState<Genres[]>([])
+export default function SingleTvScreen() {
   const route = useRoute()
   const navigation = useNavigation<NavigationProps>()
-  const { id, title, release_date, poster_path, overview, vote_average, generes, runtime } =
+  const [tvDetailData, setTvDetailData] = useState<Tv>()
+  const [movieGenres, setMovieGenre] = useState<Genres[]>([])
+  const [actors, setActors] = useState<Actor[]>([])
+  const { name, poster_path, first_air_date, overview, runtime, id, vote_average, generes } =
     route.params as SingleMovieRouteProps
 
   useEffect(() => {
@@ -26,16 +25,17 @@ export default function SingleMovie() {
   }, [])
 
   async function getDetail() {
-    const result = await MovieResource.getMovieData(id)
-    setMovieDetailData(result)
+    const result = await TvResources.getTvdata(id)
+    setTvDetailData(result)
   }
 
   async function getActors() {
-    const result = await MovieResource.getCastData(id)
+    const result = await TvResources.getCastData(id)
     setActors(result)
   }
+
   async function getGenre() {
-    const result = await MovieResource.getMovieGenre(id)
+    const result = await TvResources.getMovieGenre(id)
     setMovieGenre(result)
   }
 
@@ -65,7 +65,7 @@ export default function SingleMovie() {
             },
           ]}
         />
-
+        <MaterialCommunityIcons name="bookmark-minus-outline" style={styles.book} />
         <MaterialIcons name="keyboard-arrow-left" style={styles.chevron} onPress={() => navigation.goBack()} />
       </View>
       <LinearGradient
@@ -78,11 +78,12 @@ export default function SingleMovie() {
         ]}
       />
       <View style={styles.subContainer}>
-        <Text style={styles.movieTitle}>{title}</Text>
+        <Text style={styles.movieTitle}>{name}</Text>
       </View>
 
       <View style={styles.subContainer}>
-        <Text style={styles.subDate}>{release_date}</Text>
+        <Text style={styles.subDate}>{first_air_date}</Text>
+        <Text style={styles.subDate}>{runtime}</Text>
         <View>
           <FlatList
             data={movieGenres}
@@ -91,7 +92,6 @@ export default function SingleMovie() {
             horizontal
           ></FlatList>
         </View>
-        <Text style={styles.subDate}></Text>
       </View>
       <View style={styles.subContainer2}>
         <Text style={styles.star}>{vote_average}</Text>
@@ -128,6 +128,9 @@ export default function SingleMovie() {
     </ScrollView>
   )
 }
+let width = Dimensions.get('window').width
+
+let height = Dimensions.get('window').height
 
 const styles = StyleSheet.create({
   window: {
@@ -168,7 +171,6 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     color: 'white',
   },
-
   subContainer: {
     position: 'relative',
     bottom: 100,
@@ -186,7 +188,6 @@ const styles = StyleSheet.create({
   },
   star: {
     fontSize: 30,
-    marginRight: 10,
     color: '#FDC432',
   },
   subOverview: {
@@ -208,14 +209,16 @@ const styles = StyleSheet.create({
   btnCont: {
     flexDirection: 'row',
     justifyContent: 'center',
-    marginBottom: 30,
+    position: 'relative',
+    marginTop: 20,
+    bottom: 20,
   },
   cast: {
     color: 'white',
     fontSize: 20,
     marginLeft: 10,
     position: 'relative',
-    bottom: 70,
+    bottom: 90,
   },
   rating: {
     marginTop: 6,
@@ -227,12 +230,9 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgb(23, 29, 33)',
     zIndex: 1000,
   },
-  casts: {
-    color: 'white',
-  },
   wrapActors: {
-    marginTop: -50,
-    marginBottom: 30,
+    marginTop: -70,
+    marginBottom: 20,
   },
   subGenre: {
     marginLeft: 10,

@@ -2,12 +2,12 @@ import { View, Text, TouchableHighlight, Pressable, Image, StyleSheet } from 're
 import React from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { NavigationProps, Searched } from '../types'
+import { MaterialCommunityIcons } from '@expo/vector-icons'
 
 interface Props {
   searchedMovies: Searched
-  handleFavouritesClick: any
 }
-export default function SingleSearched({ searchedMovies }: Props) {
+export default function SingleSearchedScreen({ searchedMovies }: Props) {
   const route = useRoute()
   const navigation = useNavigation<NavigationProps>()
   const { id, title, release_date, poster_path, overview, vote_average, runtime, generes } = searchedMovies
@@ -37,6 +37,14 @@ export default function SingleSearched({ searchedMovies }: Props) {
       <View style={styles.wrap}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.date}>{release_date}</Text>
+        <Pressable
+          style={styles.add}
+          onPress={() => {
+            handleFavouritesClick(searchedMovies)
+          }}
+        >
+          <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.book} />
+        </Pressable>
       </View>
     </View>
   )

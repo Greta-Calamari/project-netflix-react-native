@@ -10,6 +10,7 @@ export interface Movie {
   runtime: number
   generes: string
   name?: string
+  isInFavourite?: boolean
 }
 export interface Tv {
   id: string
@@ -71,9 +72,11 @@ export interface SingleMovieRouteProps {
   character?: string
 }
 export interface FavouriteStackParams {
-  favMovieArray: any
-  handleRemove: any
+  favMovieArray?: any
+  handleRemove?: any
   refreshFlatlist?: any
+  handleFavouritesClick?: any
+  searchedMovies?: Searched
 }
 export interface HomeStackParams {
   favMovieArray: any
@@ -87,6 +90,7 @@ export type StackParamsList = {
   Play: undefined
   Saved: undefined | SingleMovieRouteProps
   FavouriteBox: FavouriteStackParams | undefined
+  SingleSearched: FavouriteStackParams | undefined
 }
 
 export type NavigationProps = StackNavigationProp<StackParamsList>

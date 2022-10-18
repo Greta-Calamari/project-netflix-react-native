@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigation, useRoute } from '@react-navigation/native'
 import { NavigationProps } from '../types'
 
-export default function ButtonComponent() {
+export default function PlayScreen() {
   const [count, setCount] = useState(0)
 
   useEffect(() => {

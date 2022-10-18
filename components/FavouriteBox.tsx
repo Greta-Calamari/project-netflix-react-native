@@ -20,19 +20,21 @@ export default function FavouriteBox() {
     }, [navigation])
   )
 
-  async function removeMovie(id: Movie) {
-    const value = await StorageResources.storageGet('favmovies')
-    const alteredValue = value.filter(function (e: { id: any }) {
-      return e.id !== id
+  async function removeMovie(item: Movie) {
+    const favorites = await StorageResources.storageGet('favmovies')
+    const noMoreFavorites = favorites.filter(function (e: { id: any }) {
+      return e.id !== item
     })
-    StorageResources.storageSave('favmovies', alteredValue)
-    setFavorite(alteredValue)
+    item.isInFavourite = false
+    StorageResources.storageSave('favmovies', noMoreFavorites)
+    setFavorite(noMoreFavorites)
   }
 
   async function getFav() {
     const favorites = await StorageResources.storageGet('favmovies')
     setFavorite(favorites)
     setIsLoadingFav(false)
+    favorites.isInFavourite = true
   }
 
   const renderItemFav = ({ item }: any) => (

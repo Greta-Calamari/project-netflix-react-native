@@ -1,20 +1,20 @@
 import { createNativeStackNavigator } from '@react-navigation/native-stack'
-import { NavigationContainer, useNavigation, useRoute } from '@react-navigation/native'
+import { NavigationContainer } from '@react-navigation/native'
 
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs'
 import Ionicons from '@expo/vector-icons/Ionicons'
-import Home from '../screen/Home'
 
 import SearchedMoviesBox from '../components/SearchedMoviesBox'
 import React from 'react'
 
-import Play from '../screen/Play'
-import Saved from '../screen/Saved'
-import User from '../screen/User'
-import SingleMovie from '../screen/SingleMovie'
-import SingleTv from '../screen/SingleTv'
-import SingleWatched from '../screen/SingleWatched'
 import FavouriteBox from '../components/FavouriteBox'
+import HomeScreen from '../screen/HomeScreen'
+import PlayScreen from '../screen/PlayScreen'
+import SavedScreen from '../screen/SavedScreen'
+import SingleMovieScreen from '../screen/SingleMovieScreen'
+import SingleTvScreen from '../screen/SingleTvScreen'
+import SingleWatchedScreen from '../screen/SingleWatchedScreen'
+import UserScreen from '../screen/UserScreen'
 
 const Stack = createNativeStackNavigator()
 const Tab = createBottomTabNavigator()
@@ -35,13 +35,13 @@ function Stacked() {
       }}
     >
       <Stack.Screen name="BottomTab" component={BottomTabNav} options={{ title: 'BottomTab' }} />
-      <Stack.Screen name="Home" component={Home} options={{ title: 'Home' }} />
-      <Stack.Screen name="Play" component={Play} options={{ title: 'Player' }} />
-      <Stack.Screen name="Saved" component={Saved} options={{ title: 'Saved' }} />
-      <Stack.Screen name="User" component={User} options={{ title: 'User' }} />
-      <Stack.Screen name="SingleMovie" component={SingleMovie} options={{ title: 'SingleMovie' }} />
-      <Stack.Screen name="SingleTv" component={SingleTv} options={{ title: 'SingleTv' }} />
-      <Stack.Screen name="SingleWatched" component={SingleWatched} options={{ title: 'SingleWatched' }} />
+      <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Home' }} />
+      <Stack.Screen name="Play" component={PlayScreen} options={{ title: 'Player' }} />
+      <Stack.Screen name="Saved" component={SavedScreen} options={{ title: 'Saved' }} />
+      <Stack.Screen name="User" component={UserScreen} options={{ title: 'User' }} />
+      <Stack.Screen name="SingleMovie" component={SingleMovieScreen} options={{ title: 'SingleMovie' }} />
+      <Stack.Screen name="SingleTv" component={SingleTvScreen} options={{ title: 'SingleTv' }} />
+      <Stack.Screen name="SingleWatched" component={SingleWatchedScreen} options={{ title: 'SingleWatched' }} />
     </Stack.Navigator>
   )
 }
@@ -78,7 +78,7 @@ function BottomTabNav() {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={Home} />
+      <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Favourites" component={FavouriteBox} options={{ title: 'FavouriteBox' }} />
       <Tab.Screen name="Search" component={SearchedMoviesBox} />
     </Tab.Navigator>

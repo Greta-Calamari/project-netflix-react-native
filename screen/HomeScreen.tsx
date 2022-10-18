@@ -10,7 +10,7 @@ import LoaderBox from '../components/LoaderBox'
 import WatchedBox from '../components/WatchedBox'
 import { useNavigation } from '@react-navigation/native'
 
-export default function Home() {
+export default function HomeScreen() {
   const navigation = useNavigation()
   const [movies, setMovies] = useState<Movie[]>([])
   const [tvShows, setTvShows] = useState<Tv[]>([])
@@ -49,6 +49,7 @@ export default function Home() {
 
   const addToFavorites = async (item: Movie) => {
     if (favorites.includes(item)) return null
+    item.isInFavourite = true
     StorageResources.storageSave('favmovies', [...favorites, item])
     setFavorites([...favorites, item])
   }

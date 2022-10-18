@@ -9,7 +9,7 @@ import { Rating } from 'react-native-ratings'
 import { WatchedResources, TvResources } from '../api'
 import ActorProfileBox from '../components/ActorProfileBox'
 
-export default function SingleTv() {
+export default function SingleWatchedScreen() {
   const route = useRoute()
   const navigation = useNavigation<NavigationProps>()
   const [movieGenres, setMovieGenre] = useState<Genres[]>([])

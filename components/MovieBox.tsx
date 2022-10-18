@@ -1,8 +1,9 @@
 import { Text, Image, StyleSheet, View, TouchableHighlight, Pressable } from 'react-native'
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Movie } from '../types'
 import { useFocusEffect, useNavigation } from '@react-navigation/native'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
+import { StorageResources } from '../api'
 
 interface Props {
   movie: Movie
@@ -10,16 +11,9 @@ interface Props {
 }
 
 export default function MovieBox({ movie, handleFavouritesClick }: Props) {
-  const { title, poster_path, release_date, id, overview, vote_average, runtime, generes } = movie
+  const { title, poster_path, release_date, id, overview, vote_average, runtime, generes, isInFavourite } = movie
   const navigation = useNavigation()
-  const [myColor, setmyColor] = useState('white')
-  useFocusEffect(
-    React.useCallback(() => {
-      return () => {
-        setmyColor('white')
-      }
-    }, [navigation])
-  )
+
   return (
     <View>
       <TouchableHighlight
@@ -49,10 +43,11 @@ export default function MovieBox({ movie, handleFavouritesClick }: Props) {
         <Pressable
           style={styles.add}
           onPress={() => {
-            handleFavouritesClick(movie), setmyColor('red')
+            handleFavouritesClick(movie)
           }}
         >
-          <MaterialCommunityIcons name="bookmark-plus-outline" color={myColor} style={styles.book} />
+          {isInFavourite && <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.bookFav} />}
+          {!isInFavourite && <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.book} />}
         </Pressable>
       </View>
     </View>
@@ -78,6 +73,11 @@ const styles = StyleSheet.create({
   },
   book: {
     fontSize: 30,
+    color: 'white',
+  },
+  bookFav: {
+    fontSize: 30,
+    color: 'red',
   },
   add: {
     position: 'absolute',

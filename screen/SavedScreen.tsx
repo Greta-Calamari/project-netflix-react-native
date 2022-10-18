@@ -1,13 +1,12 @@
-// rnfe
 import { View, Text } from 'react-native'
 import React from 'react'
 
-const User = () => {
+const SavedScreen = () => {
   return (
     <View>
-      <Text>User</Text>
+      <Text>Saved</Text>
     </View>
   )
 }
 
-export default User
+export default SavedScreen

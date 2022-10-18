@@ -2,7 +2,7 @@ import { View, Text, StyleSheet, TextInput, FlatList, SafeAreaView } from 'react
 import React, { useEffect, useState } from 'react'
 import { Searched } from '../types'
 import SearchedResources from '../api/resources/Searched'
-import SingleSearched from '../screen/SingleSearched'
+import SingleSearched from '../screen/SingleSearchedScreen'
 import LoaderBox from './LoaderBox'
 import { Ionicons } from '@expo/vector-icons'
 
