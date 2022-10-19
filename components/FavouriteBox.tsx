@@ -20,12 +20,12 @@ export default function FavouriteBox() {
     }, [navigation])
   )
 
-  async function removeMovie(item: Movie) {
+  async function removeMovie(film: Movie) {
     const favorites = await StorageResources.storageGet('favmovies')
     const noMoreFavorites = favorites.filter(function (e: { id: any }) {
-      return e.id !== item
+      // if (movie.isInFavourite === true) return (movie.isInFavourite = false)
+      return e.id !== film
     })
-    item.isInFavourite = false
     StorageResources.storageSave('favmovies', noMoreFavorites)
     setFavorite(noMoreFavorites)
   }
@@ -49,22 +49,25 @@ export default function FavouriteBox() {
             uri: `https://image.tmdb.org/t/p/w500/${poster_path}`,
           }}
         />
-        <Text style={styles.fav}>{title}</Text>
-        <Text style={styles.fav}>{name}</Text>
-        <MaterialCommunityIcons
-          onPress={() => {
-            removeMovie(id)
-          }}
-          name="bookmark-minus-outline"
-          style={styles.book}
-        />
+        <View>
+          <MaterialCommunityIcons
+            onPress={() => {
+              removeMovie(id)
+            }}
+            name="bookmark-minus-outline"
+            style={styles.book}
+          />
+        </View>
+        <View>
+          {title && <Text style={styles.fav}>{title}</Text>}
+          {!title && <Text style={styles.fav}>{name}</Text>}
+        </View>
       </>
     </View>
   )
   return (
     <View style={styles.container1}>
       <Text style={styles.title}>Preferiti</Text>
-
       <View style={styles.container}>
         {isLoadingFav && <LoaderBox />}
         {!isLoadingFav && (
@@ -85,8 +88,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   container: {
-    marginTop: 40,
-    flex: 1,
+    marginTop: 140,
+    marginLeft: 30,
   },
   fav: {
     color: 'white',
@@ -107,19 +110,21 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   wrap: {
-    position: 'relative',
-    top: 100,
-    marginLeft: 30,
+    margin: 10,
   },
   title: {
     position: 'relative',
-    top: 130,
+    top: 120,
     color: 'white',
     fontSize: 30,
-    marginLeft: 30,
+    textAlign: 'center',
   },
   book: {
+    position: 'absolute',
+    bottom: 20,
+    right: 5,
     color: 'white',
+    backgroundColor: '#292b2b52',
     fontSize: 30,
     textAlign: 'center',
   },

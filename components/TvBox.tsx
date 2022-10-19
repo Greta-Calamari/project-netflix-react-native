@@ -44,17 +44,18 @@ export function TvBox({ Tv, handleFavouritesClick }: Props) {
           }}
         />
       </TouchableHighlight>
-      <View style={styles.wrap}>
-        <Text style={styles.name}>{name}</Text>
-        <Text style={styles.date}>{first_air_date}</Text>
+      <View>
         <Pressable
-          style={styles.add}
           onPress={() => {
             handleFavouritesClick(Tv), setmyColor('red')
           }}
         >
           <MaterialCommunityIcons name="bookmark-plus-outline" color={myColor} style={styles.book} />
         </Pressable>
+      </View>
+      <View style={styles.wrap}>
+        <Text style={styles.name}>{name}</Text>
+        <Text style={styles.date}>{first_air_date}</Text>
       </View>
     </View>
   )
@@ -74,15 +75,24 @@ const styles = StyleSheet.create({
     color: 'grey',
   },
   wrap: {
-    marginLeft: 20,
+    marginLeft: 30,
     width: 100,
   },
-  add: {
-    position: 'absolute',
-    left: 100,
-    bottom: 10,
-  },
+
   book: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
     fontSize: 30,
+    backgroundColor: '#292b2b79',
+    color: 'white',
+  },
+  bookFav: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    fontSize: 30,
+    backgroundColor: '#292b2b79',
+    color: 'red',
   },
 })

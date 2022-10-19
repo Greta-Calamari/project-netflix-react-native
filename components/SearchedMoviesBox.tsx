@@ -69,15 +69,7 @@ const styles = StyleSheet.create({
     marginLeft: 20,
     width: 100,
   },
-  book: {
-    color: 'white',
-    fontSize: 30,
-  },
-  add: {
-    position: 'absolute',
-    left: 100,
-    bottom: 10,
-  },
+
   input: {
     height: 40,
     borderWidth: 1,

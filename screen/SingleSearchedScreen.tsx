@@ -34,17 +34,18 @@ export default function SingleSearchedScreen({ searchedMovies }: Props) {
           }}
         />
       </TouchableHighlight>
-      <View style={styles.wrap}>
-        <Text style={styles.title}>{title}</Text>
-        <Text style={styles.date}>{release_date}</Text>
+      <View>
         <Pressable
-          style={styles.add}
           onPress={() => {
             handleFavouritesClick(searchedMovies)
           }}
         >
           <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.book} />
         </Pressable>
+      </View>
+      <View style={styles.wrap}>
+        <Text style={styles.title}>{title}</Text>
+        <Text style={styles.date}>{release_date}</Text>
       </View>
     </View>
   )
@@ -63,16 +64,23 @@ const styles = StyleSheet.create({
     color: 'grey',
   },
   wrap: {
-    marginLeft: 20,
-    width: 100,
+    marginLeft: 30,
+    width: 130,
   },
   book: {
-    color: 'white',
-    fontSize: 30,
-  },
-  add: {
     position: 'absolute',
-    left: 100,
-    bottom: 10,
+    bottom: 20,
+    right: 20,
+    fontSize: 30,
+    backgroundColor: '#292b2b79',
+    color: 'white',
+  },
+  bookFav: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    fontSize: 30,
+    backgroundColor: '#292b2b79',
+    color: 'red',
   },
 })

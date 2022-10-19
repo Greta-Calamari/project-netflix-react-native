@@ -41,13 +41,15 @@ export default function ContinueBox({ movieWatched, handleFavouritesClick }: Pro
             }}
           />
         </TouchableHighlight>
+        <View>
+          <Pressable onPress={() => handleFavouritesClick(movieWatched)}>
+            <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.book} />
+          </Pressable>
+        </View>
       </View>
       <View style={styles.wrap}>
         <Text style={styles.title}>{title}</Text>
         <Text style={styles.date}>{release_date}</Text>
-        <Pressable style={styles.add} onPress={() => handleFavouritesClick(movieWatched)}>
-          <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.book} />
-        </Pressable>
       </View>
     </View>
   )
@@ -82,13 +84,20 @@ const styles = StyleSheet.create({
     right: 60,
     top: 59,
   },
-  add: {
-    position: 'absolute',
-    left: 100,
-    bottom: 10,
-  },
   book: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
     fontSize: 30,
+    backgroundColor: '#292b2b52',
     color: 'white',
+  },
+  bookFav: {
+    position: 'absolute',
+    bottom: 20,
+    right: 20,
+    fontSize: 30,
+    color: 'red',
+    backgroundColor: '#292b2b52',
   },
 })
