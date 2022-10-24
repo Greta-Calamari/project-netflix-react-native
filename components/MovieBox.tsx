@@ -37,14 +37,9 @@ export default function MovieBox({ movie, handleFavouritesClick }: Props) {
           }}
         />
       </TouchableHighlight>
-      <Pressable
-        onPress={() => {
-          handleFavouritesClick(movie)
-        }}
-      >
-        {/* {isInFavourite && <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.bookFav} />} */}
-        {/* {!isInFavourite && <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.book} />} */}
-        <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.book} />
+      <Pressable onPress={() => handleFavouritesClick(movie)}>
+        {isInFavourite && <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.bookFav} />}
+        {!isInFavourite && <MaterialCommunityIcons name="bookmark-plus-outline" style={styles.book} />}
       </Pressable>
       <View style={styles.wrap}>
         <Text style={styles.title}>{title}</Text>

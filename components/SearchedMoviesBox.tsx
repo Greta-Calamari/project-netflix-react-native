@@ -4,7 +4,6 @@ import { Searched } from '../types'
 import SearchedResources from '../api/resources/Searched'
 import SingleSearched from '../screen/SingleSearchedScreen'
 import LoaderBox from './LoaderBox'
-import { Ionicons } from '@expo/vector-icons'
 
 export default function SearchedMoviesBox() {
   const [searchedMovies, setSearchedMovies] = useState<Searched[]>([])
@@ -22,9 +21,7 @@ export default function SearchedMoviesBox() {
     setIsLoadingSearchedMovies(false)
   }
 
-  const renderItemSearchedMovies = ({ item }: { item: Searched }) => (
-    <SingleSearched searchedMovies={item} handleFavouritesClick={undefined} />
-  )
+  const renderItemSearchedMovies = ({ item }: { item: Searched }) => <SingleSearched searchedMovies={item} />
   return (
     <View style={styles.container}>
       <SafeAreaView>
@@ -36,7 +33,6 @@ export default function SearchedMoviesBox() {
       </SafeAreaView>
 
       <Text style={styles.textWhite}>Search Movie</Text>
-      {/* <Ionicons name="md-search" size={24} style={styles.lens} /> */}
       <View style={styles.cont}>
         {isLoadingSearchedMovies && <LoaderBox />}
         {!isLoadingSearchedMovies && (

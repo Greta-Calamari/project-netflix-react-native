@@ -5,7 +5,6 @@ import { FlatList } from 'react-native-gesture-handler'
 import { MaterialCommunityIcons } from '@expo/vector-icons'
 import { StorageResources } from '../api'
 import LoaderBox from './LoaderBox'
-import navigation from '../navigation'
 import { useFocusEffect } from '@react-navigation/native'
 
 export default function FavouriteBox() {
@@ -16,29 +15,23 @@ export default function FavouriteBox() {
     React.useCallback(() => {
       setIsLoadingFav(true)
       getFav()
-      return () => {}
-    }, [navigation])
+    }, [])
   )
 
-  async function removeMovie(film: Movie) {
-    const favorites = await StorageResources.storageGet('favmovies')
-    const noMoreFavorites = favorites.filter(function (e: { id: any }) {
-      // if (movie.isInFavourite === true) return (movie.isInFavourite = false)
-      return e.id !== film
-    })
-    StorageResources.storageSave('favmovies', noMoreFavorites)
-    setFavorite(noMoreFavorites)
+  async function removeMovie(id: string) {
+    const newFavouriteMovies = favoritesFilm.filter((movie) => movie.id !== id)
+    StorageResources.storageSave('favmovies', newFavouriteMovies)
+    setFavorite(newFavouriteMovies)
   }
 
   async function getFav() {
-    const favorites = await StorageResources.storageGet('favmovies')
+    const favorites: Movie[] = await StorageResources.storageGet('favmovies')
     setFavorite(favorites)
     setIsLoadingFav(false)
-    favorites.isInFavourite = true
   }
 
   const renderItemFav = ({ item }: any) => (
-    <FavMovie name={item.name} title={item.title} poster_path={item.poster_path} id={item.id} />
+    <FavMovie name={item.name} title={item.title} poster_path={item.poster_path} id={item.id} isinFavourite={true} />
   )
   const FavMovie = ({ title, poster_path, name, id }: any) => (
     <View style={styles.wrap}>
