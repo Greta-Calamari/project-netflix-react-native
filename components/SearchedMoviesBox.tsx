@@ -1,12 +1,13 @@
 import { View, Text, StyleSheet, TextInput, FlatList, SafeAreaView } from 'react-native'
 import React, { useEffect, useState } from 'react'
-import { Searched } from '../types'
+import { Movie } from '../types'
 import SearchedResources from '../api/resources/Searched'
-import SingleSearched from '../screen/SingleSearchedScreen'
 import LoaderBox from './LoaderBox'
+import SingleMovieScreen from '../screen/SingleMovieScreen'
+import MovieBox from './MovieBox'
 
 export default function SearchedMoviesBox() {
-  const [searchedMovies, setSearchedMovies] = useState<Searched[]>([])
+  const [searchedMovies, setSearchedMovies] = useState<Movie[]>([])
   const [searchValue, setSearchValue] = useState('')
   const [isLoadingSearchedMovies, setIsLoadingSearchedMovies] = useState(true)
 
@@ -21,7 +22,10 @@ export default function SearchedMoviesBox() {
     setIsLoadingSearchedMovies(false)
   }
 
-  const renderItemSearchedMovies = ({ item }: { item: Searched }) => <SingleSearched searchedMovies={item} />
+  const renderItemSearchedMovies = ({ item }: { item: Movie }) => (
+    <MovieBox movie={item} handleFavouritesClick={undefined} />
+  )
+
   return (
     <View style={styles.container}>
       <SafeAreaView>

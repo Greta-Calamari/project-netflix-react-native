@@ -2,19 +2,17 @@ import { StatusBar } from 'expo-status-bar'
 import React, { useState, useEffect } from 'react'
 import { Text, View, StyleSheet, ScrollView, FlatList, TextInput } from 'react-native'
 import Header from '../components/Header'
-import { Watched, Movie, Tv, Searched, HomeStackParams } from '../types'
+import { Movie } from '../types'
 import MovieBox from '../components/MovieBox'
-import { TvBox } from '../components/TvBox'
 import { MovieResource, StorageResources, TvResources, WatchedResources } from '../api'
 import LoaderBox from '../components/LoaderBox'
-import WatchedBox from '../components/WatchedBox'
 import { useNavigation } from '@react-navigation/native'
 
 export default function HomeScreen() {
   const navigation = useNavigation()
   const [movies, setMovies] = useState<Movie[]>([])
-  const [tvShows, setTvShows] = useState<Tv[]>([])
-  const [continues, setContinue] = useState<Watched[]>([])
+  const [tvShows, setTvShows] = useState<Movie[]>([])
+  const [continues, setContinue] = useState<Movie[]>([])
   const [isLoadingMovies, setIsLoadingMovies] = useState(true)
   const [isLoadingTvShows, setIsLoadingTvShows] = useState(true)
   const [isLoadingWatched, setisLoadingWatched] = useState(true)
@@ -56,12 +54,6 @@ export default function HomeScreen() {
 
   const renderItem = ({ item }: { item: Movie }) => <MovieBox movie={item} handleFavouritesClick={addToFavorites} />
 
-  const renderItemTV = ({ item }: { item: Tv }) => <TvBox Tv={item} handleFavouritesClick={addToFavorites} />
-
-  const renderItemContinue = ({ item }: { item: Watched }) => (
-    <WatchedBox movieWatched={item} handleFavouritesClick={addToFavorites} />
-  )
-
   return (
     <ScrollView nestedScrollEnabled={true} style={styles.container}>
       <StatusBar translucent backgroundColor="transparent" />
@@ -90,7 +82,7 @@ export default function HomeScreen() {
         <Text style={styles.textWhite}>Tv Show</Text>
         {isLoadingTvShows && <LoaderBox />}
         {!isLoadingTvShows && (
-          <FlatList data={tvShows} keyExtractor={(item) => item.id} renderItem={renderItemTV} horizontal></FlatList>
+          <FlatList data={tvShows} keyExtractor={(item) => item.id} renderItem={renderItem} horizontal></FlatList>
         )}
       </View>
 
@@ -98,12 +90,7 @@ export default function HomeScreen() {
         <Text style={styles.textWhite}>Movie Watching</Text>
         {isLoadingWatched && <LoaderBox />}
         {!isLoadingWatched && (
-          <FlatList
-            data={continues}
-            keyExtractor={(item) => item.id}
-            renderItem={renderItemContinue}
-            horizontal
-          ></FlatList>
+          <FlatList data={continues} keyExtractor={(item) => item.id} renderItem={renderItem} horizontal></FlatList>
         )}
       </View>
 

@@ -10,32 +10,10 @@ export interface Movie {
   runtime: number
   generes: string
   name?: string
+  first_air_date?: string
   isInFavourite?: boolean
+  handleFavouritesClick?: Function
 }
-export interface Tv {
-  id: string
-  name: string
-  title: string
-  poster_path: string
-  first_air_date: string
-  overview: string
-  vote_average: number
-  runtime: number
-  generes: string
-}
-export interface Watched {
-  id: string
-  name: string
-  title: string
-  poster_path: string
-  first_air_date: string
-  overview: string
-  release_date: string
-  vote_average: number
-  runtime: number
-  generes: string
-}
-
 export interface Searched {
   id: string
   title: string

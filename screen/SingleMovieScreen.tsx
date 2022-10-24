@@ -16,7 +16,7 @@ export default function SingleMovieScreen() {
   const [movieGenres, setMovieGenre] = useState<Genres[]>([])
   const route = useRoute()
   const navigation = useNavigation<NavigationProps>()
-  const { id, title, release_date, poster_path, overview, vote_average, generes, runtime } =
+  const { id, title, release_date, poster_path, overview, vote_average, first_air_date, name } =
     route.params as SingleMovieRouteProps
 
   useEffect(() => {
@@ -78,11 +78,13 @@ export default function SingleMovieScreen() {
         ]}
       />
       <View style={styles.subContainer}>
-        <Text style={styles.movieTitle}>{title}</Text>
+        {title && <Text style={styles.movieTitle}>{title}</Text>}
+        {!title && <Text style={styles.movieTitle}>{name}</Text>}
       </View>
 
       <View style={styles.subContainer}>
-        <Text style={styles.subDate}>{release_date}</Text>
+        {release_date && <Text style={styles.subDate}>{release_date}</Text>}
+        {!release_date && <Text style={styles.subDate}>{first_air_date}</Text>}
         <View>
           <FlatList
             data={movieGenres}

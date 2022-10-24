@@ -12,8 +12,6 @@ import HomeScreen from '../screen/HomeScreen'
 import PlayScreen from '../screen/PlayScreen'
 import SavedScreen from '../screen/SavedScreen'
 import SingleMovieScreen from '../screen/SingleMovieScreen'
-import SingleTvScreen from '../screen/SingleTvScreen'
-import SingleWatchedScreen from '../screen/SingleWatchedScreen'
 import UserScreen from '../screen/UserScreen'
 
 const Stack = createNativeStackNavigator()
@@ -40,8 +38,6 @@ function Stacked() {
       <Stack.Screen name="Saved" component={SavedScreen} options={{ title: 'Saved' }} />
       <Stack.Screen name="User" component={UserScreen} options={{ title: 'User' }} />
       <Stack.Screen name="SingleMovie" component={SingleMovieScreen} options={{ title: 'SingleMovie' }} />
-      <Stack.Screen name="SingleTv" component={SingleTvScreen} options={{ title: 'SingleTv' }} />
-      <Stack.Screen name="SingleWatched" component={SingleWatchedScreen} options={{ title: 'SingleWatched' }} />
     </Stack.Navigator>
   )
 }
